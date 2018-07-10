@@ -4,8 +4,8 @@
 
 # Site
 title:  LoveLotus
-#subtitle: DianL的个人博客
-description: 记录一些学习的笔记，及感想
+#subtitle:
+description: Love study!Love life!Love Lotus! 
 keywords: 区块链, 同态加密, 密码学
 author: DianL
 language: zh-Hans
@@ -87,7 +87,7 @@ tag_generator:
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
 
-theme: hexo-theme-next
+theme: next
  
 feed:
   type: atom
@@ -100,4 +100,4 @@ deploy:
   repo: git@github.com:llllddd/llllddd.github.io.git
   branch: master
 
-#creative_commons: by-nc-sa
+creative_commons: by-nc-sa
