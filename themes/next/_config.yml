@@ -17,7 +17,7 @@ override: true
 
 # For example, you put your favicons into `hexo-site/source/images` directory.
 # Then need to rename & redefine they on any other names, otherwise icons from Next will rewrite your custom icons in Hexo.
-favicon:
+favicon: 
   small: /images/favicon-16x16-next.png
   medium: /images/favicon-32x32-next.png
   apple_touch_icon: /images/apple-touch-icon-next.png
@@ -90,7 +90,7 @@ menu:
   about: /about || user
   # schedule: /schedule
   #sitemap: /sitemap.xml
-
+  essay: /categories/专栏 || star
 
 # Enable/Disable menu icons.
 menu_icons:
@@ -131,13 +131,13 @@ social:
   #YouTube: https://youtube.com/yourname || youtube
   #Instagram: https://instagram.com/yourname || instagram
   #Skype: skype:yourname?call|chat || skype
-  Weibo: https://weibo.com/u/2219770162
+  微博: https://weibo.com/u/2219770162 || weibo
 
 social_icons:
   enable: true
   icons_only: false
   transition: false
-
+  
 # Blog rolls
 #links_icon: link
 #links_title: 友情链接
@@ -149,7 +149,7 @@ social_icons:
 # Sidebar Avatar
 # in theme directory(source/images): /images/avatar.jpg
 # in site  directory(source/uploads): /uploads/avatar.jpg
-avatar: /images/avatar.png
+avatar: http://chuantu.biz/t6/341/1531317166x-1404795690.png
 
 
 
