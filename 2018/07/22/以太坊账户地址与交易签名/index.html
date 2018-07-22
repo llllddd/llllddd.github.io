@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.cat.net/css?family=Roboto Slab:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="椭圆曲线加密,以太坊,GO," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="LoveLotus" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="以太坊账户地址以太坊有两种不同的账户类型:  合约账户。 外部账户EOA(Externally Owned Accounts)。  合约账户对应1个智能合约的部署地址，该地址可以接受代币的转入，但是代币的转出则需要在合约中提供接口函数。 外部账户的所有权是由密钥来验证的。密钥由用户存储在文件或钱包中。 钱包中的密钥完全独立于以太坊协议，可由用户的钱包软件生成和管理而并不需要依照区块链或接入互联网。">
+<meta name="keywords" content="椭圆曲线加密,以太坊,GO">
+<meta property="og:type" content="article">
+<meta property="og:title" content="以太坊账户地址与交易签名">
+<meta property="og:url" content="http://ldlovezyh.cn/2018/07/22/以太坊账户地址与交易签名/index.html">
+<meta property="og:site_name" content="LoveLotus">
+<meta property="og:description" content="以太坊账户地址以太坊有两种不同的账户类型:  合约账户。 外部账户EOA(Externally Owned Accounts)。  合约账户对应1个智能合约的部署地址，该地址可以接受代币的转入，但是代币的转出则需要在合约中提供接口函数。 外部账户的所有权是由密钥来验证的。密钥由用户存储在文件或钱包中。 钱包中的密钥完全独立于以太坊协议，可由用户的钱包软件生成和管理而并不需要依照区块链或接入互联网。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-07-22T15:29:43.050Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="以太坊账户地址与交易签名">
+<meta name="twitter:description" content="以太坊账户地址以太坊有两种不同的账户类型:  合约账户。 外部账户EOA(Externally Owned Accounts)。  合约账户对应1个智能合约的部署地址，该地址可以接受代币的转入，但是代币的转出则需要在合约中提供接口函数。 外部账户的所有权是由密钥来验证的。密钥由用户存储在文件或钱包中。 钱包中的密钥完全独立于以太坊协议，可由用户的钱包软件生成和管理而并不需要依照区块链或接入互联网。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: 'undefined',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+<script>
+    (function(){
+        if('123'){
+            if (prompt('Password:') !== '123'){
+                alert('ERROR');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+
+  <link rel="canonical" href="http://ldlovezyh.cn/2018/07/22/以太坊账户地址与交易签名/"/>
+
+
+
+
+
+  <title>以太坊账户地址与交易签名 | LoveLotus</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b0339818ee7d3ca09ef6f121603241e1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">LoveLotus</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-essay">
+          <a href="/categories/专栏" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-star"></i> <br />
+            
+            星
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ldlovezyh.cn/2018/07/22/以太坊账户地址与交易签名/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="DianL">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://chuantu.biz/t6/341/1531317166x-1404795690.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LoveLotus">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">以太坊账户地址与交易签名</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-22T23:29:43+08:00">
+                2018-07-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/以太坊/" itemprop="url" rel="index">
+                    <span itemprop="name">以太坊</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="以太坊账户地址"><a href="#以太坊账户地址" class="headerlink" title="以太坊账户地址"></a>以太坊账户地址</h1><p>以太坊有两种不同的账户类型:</p>
+<div class="note info"><ol>
+<li>合约账户。</li>
+<li>外部账户EOA(Externally Owned Accounts)。</li>
+</ol></div>
+<p>合约账户对应1个智能合约的部署地址，该地址可以接受代币的转入，但是代币的转出则需要在合约中提供接口函数。</p>
+<p>外部账户的所有权是由密钥来验证的。密钥由用户存储在文件或钱包中。</p>
+<p>钱包中的密钥完全独立于以太坊协议，可由用户的钱包软件生成和管理而并不需要依照区块链或接入互联网。</p>
+<p>账户中的密钥包含两部分：公钥和私钥,公钥可以暴露给其他人，而私钥只有账户的所有者才能管理，掌握了私钥就掌握了该账户的所有权，所以需要对私钥进行可靠的保密存储。</p>
+<p>以太坊的交易支付中，接收方由一个以太坊地址表示，地址由账户的公钥生成。以太坊地址是用户能接触到的密钥的唯一表示。</p>
+<hr>
+<h2 id="椭圆曲线加密"><a href="#椭圆曲线加密" class="headerlink" title="椭圆曲线加密"></a>椭圆曲线加密</h2><p>公钥加密方案基于困难的数学难题，如著名的RSA加密算法是基于大整数的分解难题。</p>
+<p>以太坊中使用的是椭圆曲线加密方案，它基于椭圆曲线上的离散对数问题,是一种公钥加密方案。</p>
+<p>椭圆曲线上的所有点对加法作成一个循环群，在曲线上进行数乘运算是简单的，但它的逆运算则是困难的。</p>
+<p>以太坊中选取椭圆曲线和比特币中的一样为secp256k1，实际上以太坊中调用的就是比特币的椭圆曲线加密库。</p>
+<hr>
+<h3 id="加密算法-ECDH"><a href="#加密算法-ECDH" class="headerlink" title="加密算法(ECDH)"></a>加密算法(ECDH)</h3><p>以太坊账户的私钥，由随机数生成器得到的256bit的随机数，随机算法是基于系统噪音设计的。</p>
+<p>公钥是由椭圆曲线算法由私钥计算得到。但是由公钥是无法计算得到私钥，因此可用来作为账户地址。公钥数值上满足椭圆曲线方程，为512比特。</p>
+<p>椭圆曲线密码加解密步骤：</p>
+<div class="note info"><ol>
+<li>私钥256比特随机数:：$sk\leftarrow [1,n-1]$。</li>
+<li>公钥由私钥得到：$pk=sk*G$,$G$是椭圆曲线的基点。</li>
+<li>加密步骤：选取随机数$r\leftarrow [1,n-1]$，设明文为$M$  由公钥得到密文$C_x=r\times G,C_y=M+r\times PK$密文为 $C=(C_x,C_y)$</li>
+<li>解密步骤：密文由私钥解密：$M=C_y - sk\times C_x$</li>
+</ol></div>
+<hr>
+<h3 id="数字签名算法-ECDSA"><a href="#数字签名算法-ECDSA" class="headerlink" title="数字签名算法(ECDSA)"></a>数字签名算法(ECDSA)</h3><p>以太坊中使用椭圆曲线数字签名算法(Elliptic Curve Digital Signature Algorithm,ECDSA),它有三个目的：</p>
+<div class="note info"><ol>
+<li>签名证明了私钥的持有者为帐户的所有者，表明以太币支出，或合约的执行是经过授权的。</li>
+<li>证明了授权是不可抵赖的。</li>
+<li>防止交易数据在交易完成后被篡改。</li>
+</ol></div>
+<p>数字签名的数学方案有两部分组成，分为签名部分，和签名的验证部分。</p>
+<p>签名的过程：</p>
+<div class="note info"><ol>
+<li>设私钥为$sk$，公钥$PK=sk\times G$,$G$为椭圆曲线的基点，椭圆曲线的阶为$n$。</li>
+<li>计算消息m的hash值$e=HASH(m)$,以太坊中哈希算法为Keacck256。</li>
+<li>选取随机数$k\leftarrow[1,n-1]$，计算$M = k\times G$。</li>
+<li>计算 $r=M_x\bmod n$,若$r=0$返回第三步</li>
+<li>计算 $s=k^{-1}\times (z+r\times sk)\bmod n$,若$s=0$返回第三步。</li>
+<li>$(r,s)$即为所得签名。</li>
+</ol></div>
+<p>签名的验证过程：</p>
+<p>验证算法为签名算法的逆过程，若得到的结果满足椭圆曲线方程则验证通过。</p>
+<div class="note info"><ol>
+<li>验证签名(r,s)的有效性，计算得到消息的hash值$e=HASH(m)$。</li>
+<li>计算参数：$w=s^{-1}\bmod n$。</li>
+<li>计算$Q=e\times s^{-1}+r\times s^{-1}\times PK$若结果满足椭圆曲线方程验证成功。</li>
+<li>$r=Q_x$则签名有效。</li>
+</ol></div>
+<hr>
+<h2 id="哈希算法"><a href="#哈希算法" class="headerlink" title="哈希算法"></a>哈希算法</h2><p>哈希函数的输入称为预图像或者消息，输出被称为哈希值或摘要。</p>
+<p>哈希算法依据分组密码的思路，将原消息压缩和混淆。从而将任意长度的字符串映射为固定长度的比特串。</p>
+<p>密码学中哈希函数是一类单向函数，由输入很容易得到输出，但是由输出则很难得到输入的信息。</p>
+<p>哈希函数有以下五种主要的性质：</p>
+<div class="note info"><ol>
+<li>确定性：相同的消息总是得到相同的哈希值</li>
+<li>高效性：任意给定的消息，哈希算法可以快速得到其哈希值</li>
+<li>不可逆：有限时间类，由哈希值计算得到原消息是不可能的</li>
+<li>雪崩性：原消息微小的改动即会导值所得到的哈希值得巨大差异</li>
+<li>低碰撞：两个不同的消息得到同样的哈希值得概率是非常低的</li>
+</ol></div>
+<p>这些性质使得哈希函数在以太坊中有着广泛的应用包括数据签名，消息完整性验证，工作量证明，随机数生成等等。</p>
+<p>目前通用的哈希算法有四代标准，SHA1有名的MD5，SHA2的 SHA256，SHA512算法，及以太坊中使用的SHA3标准的Keacck256算法。</p>
+<hr>
+<h1 id="账户地址的生成"><a href="#账户地址的生成" class="headerlink" title="账户地址的生成"></a>账户地址的生成</h1><p>以太坊通过椭圆曲线加密算法来实现对交易的签名与验证，路径<code>github.com/ethereum/go-ethereum/crypto/</code>下的代码包负责所有与加密相关的操作。</p>
+<p>以太坊中的地址是使用单向hash函数Keacck-256从公钥或合约中派生出来的唯一标识符。</p>
+<p>具体过程为：</p>
+<div class="note info"><ol>
+<li>由椭圆曲线加密算法中得到64bytes字符串公钥。</li>
+<li>使用Keacck-256算法计算公钥的哈希值为32bytes。</li>
+<li>保留最后的20bytes(大端表示)作为以太坊的地址。</li>
+</ol></div>
+<hr>
+<h2 id="相关代码"><a href="#相关代码" class="headerlink" title="相关代码"></a>相关代码</h2><p>GO语言包中<code>crypto/ecdsa</code>包含了关于椭圆曲线的结构体声明和操作的函数，以太坊也是通过调用它来生成账户的私钥并产生公钥的。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> PublicKey <span class="keyword">struct</span> &#123;</span><br><span class="line">    elliptic.Curve</span><br><span class="line">    X, Y *big.Int</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> PrivateKey <span class="keyword">struct</span> &#123;</span><br><span class="line">    PublicKey</span><br><span class="line">	D *big.Int</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>公钥<code>PublicKey</code>结构体,包含一个<code>elliptic.Curve</code>接口的实现体来提供椭圆曲线的所有属性和相关操作；公钥的成员<code>X,Y</code>即为生成的未压缩公钥。</p>
+<p>私钥是以太坊账户中存储的唯一可以用来验证账户身份的信息，组合体<code>PrivateKey</code>有成员<code>PublicKey</code>，成员<code>D</code>是算法生成的私钥。</p>
+<p>根据不同的用途可以使用结构体<code>PrivateKey</code>或成员<code>PrivateKey.D</code>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GenerateKey</span><span class="params">(c elliptic.Curve, rand io.Reader)</span> <span class="params">(*PrivateKey, error)</span></span></span><br></pre></td></tr></table></figure>
+<p>密钥的生成是通过方法<code>GenerateKey()</code>,它返回私钥<code>PrivateKey</code>，私钥中包含成员<code>PublicKey</code>，可以生成账户地址。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ToECDSAPub</span><span class="params">(pub []<span class="keyword">byte</span>)</span> *<span class="title">ecdsa</span>.<span class="title">PublicKey</span></span> &#123;  </span><br><span class="line">    x, y := elliptic.Unmarshall(S256(), pub)  </span><br><span class="line">    <span class="keyword">return</span> &amp;ecdsa.PublicKey&#123;Curve:S256(), X:x, Y:y&#125;  </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">FromECDSAPub</span><span class="params">(pub *ecdsa.PublicKey)</span> []<span class="title">byte</span></span> &#123;  </span><br><span class="line">    <span class="keyword">return</span> elliptic.Marshall(S256(), pub.X, pub.Y)  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在生成地址之前，将结构体<code>ecdsa.PublicKey{}</code>转换为字符串类型的公钥。在<code>github.com/ethereum/go-ethereum/crypto/crypto.go</code>中定义了相关的转换函数<code>ToECDSAPub()</code>和<code>FromECDSAPub</code>。</p>
+<p>这两个函数完成了big.int 类型到 []byte的转换，实际调用时注意返回的<code>[]byte</code>类型字符串是由三部分组成，第一部分为曲线参数，后两部分是公钥字面值。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (  </span><br><span class="line">    HashLength = <span class="number">32</span>  </span><br><span class="line">    AddressLength = <span class="number">20</span>  </span><br><span class="line">)  </span><br><span class="line"><span class="keyword">type</span> Hash [HashLength]<span class="keyword">byte</span>  </span><br><span class="line"><span class="keyword">type</span> Address [AddressLength]<span class="keyword">byte</span></span><br></pre></td></tr></table></figure>
+<p>以太坊在<code>github.com/ethereum/go-ethereum/common/types.go</code>中用两个自定义类型表示32bytes的hash值和20bytes的账户地址。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Keccak512</span><span class="params">(data ...[]<span class="keyword">byte</span>)</span> []<span class="title">byte</span> </span></span><br><span class="line"><span class="function"><span class="title">func</span> <span class="title">Keccak256Hash</span><span class="params">(data ...[]<span class="keyword">byte</span>)</span> <span class="params">(h common.Hash)</span></span></span><br></pre></td></tr></table></figure>
+<p>由哈希算法Keccak256计算公钥的哈希值,以太坊在<code>github.com/ethereum/go-ethereum/crypto/crypto.go</code>中通过<code>Keccak512()</code>和<code>Keccak256Hash()</code>方法实现。</p>
+<p>需要注意函数中的参数是公钥的字符串，通过格式转换函数得到的公钥字符串中<code>pubkey[0]</code>并不是公钥，只需传入<code>pubkey[1:]</code>来计算公钥的hash值。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">BytesToAddress</span><span class="params">(b []<span class="keyword">byte</span>)</span> <span class="title">Address</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> a Address</span><br><span class="line">	a.SetBytes(b)</span><br><span class="line">	<span class="keyword">return</span> a</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(a *Address)</span> <span class="title">SetBytes</span><span class="params">(b []<span class="keyword">byte</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">len</span>(b) &gt; <span class="built_in">len</span>(a) &#123;</span><br><span class="line">		b = b[<span class="built_in">len</span>(b)-AddressLength:]</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">copy</span>(a[AddressLength-<span class="built_in">len</span>(b):], b)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后，将大端表示的公钥哈希值最后的20bytes作为账户地址，由<code>github.com/ethereum/go-ethereum/common</code>中<code>BytesToAddress()</code>和<code>SetBytes()</code>方法实现。</p>
+<p>这两个函数实际上是用来验证字符串是否满足账户地址的格式。</p>
+<hr>
+<h1 id="交易的签名"><a href="#交易的签名" class="headerlink" title="交易的签名"></a>交易的签名</h1><p>以太坊中,交易在被放进区块时要经过椭圆曲线签名算法进行数字签名。</p>
+<p>对交易数字签名主要包含两部分:</p>
+<div class="note info"><ol>
+<li>使用私钥（签名秘钥）从交易信息中创建签名 </li>
+<li>允许任何人使用交易信息和公钥验证签名       </li>
+</ol></div>
+<p>以太坊中交易进行签名主要有以下步骤：</p>
+<div class="note info"><ol>
+<li>创建交易，完整的交易数据结构包含: nonce, gasPrice, startGas, to, value, data, v, r, s。</li>
+<li>由RLP编码将交易序列化。</li>
+<li>通过Keaccak256计算交易的哈希值。</li>
+<li>由账户私钥对交易哈希值签名。</li>
+</ol></div>
+<p>$Sig=F_{sig}(F_{keccak256}(m),sk), Sig = (R,S)$</p>
+<hr>
+<h2 id="相关代码-1"><a href="#相关代码-1" class="headerlink" title="相关代码"></a>相关代码</h2><p>在<code>github.com/ethereum/go-ethereum/core/types</code>中定义了交易的结构体类型，并且提供了新建交易的函数<code>NewTransaction()</code>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Transaction <span class="keyword">struct</span> &#123;</span><br><span class="line">	data txdata</span><br><span class="line">	<span class="comment">// caches</span></span><br><span class="line">	hash atomic.Value</span><br><span class="line">	size atomic.Value</span><br><span class="line">	from atomic.Value</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> txdata <span class="keyword">struct</span> &#123;</span><br><span class="line">	AccountNonce <span class="keyword">uint64</span>          </span><br><span class="line">	Price        *big.Int        </span><br><span class="line">	GasLimit     <span class="keyword">uint64</span>          </span><br><span class="line">	Recipient    *common.Address </span><br><span class="line">	Amount       *big.Int        </span><br><span class="line">	Payload      []<span class="keyword">byte</span>         </span><br><span class="line">	<span class="comment">// 签名值</span></span><br><span class="line">	V *big.Int</span><br><span class="line">	R *big.Int</span><br><span class="line">	S *big.Int</span><br><span class="line">	Hash *common.Hash</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewTransaction</span><span class="params">(nonce <span class="keyword">uint64</span>, to common.Address, amount *big.Int, gasLimit <span class="keyword">uint64</span>, gasPrice *big.Int, data []<span class="keyword">byte</span>)</span> *<span class="title">Transaction</span></span></span><br></pre></td></tr></table></figure>
+<p>完整的交易必须包含有转入方地址<code>Recipient</code>，转账金额<code>AccountNonce</code>，每个交易独立的<code>gasprice</code>和<code>gaslimit</code>，签名<code>V,R,S</code>初始为0。</p>
+<p>以太坊在<code>github.com/ethereum/go-ethereum/rlp</code>设计了rlp编码的规则，定义了与rlp编码有关的函数。</p>
+<p>在对交易序列化的过程中实际上是完成types.Transaction{}结构体到[]byte类型的转换。</p>
+<p>由哈希算法Keccak256得到交易的哈希值后，调用椭圆曲线签名算法，进行签名。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Sign</span><span class="params">(msg []<span class="keyword">byte</span>, seckey []<span class="keyword">byte</span>)</span> <span class="params">([]<span class="keyword">byte</span>, error)</span></span> &#123;	</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以太坊对bitcoin的secp256k1 C库进行了封装，在<code>github.com/ethereum/go-ethereum/crypto/secp256k1</code>中定义了签名函数<code>Sign()</code>,需要传入私钥和被签名信息。</p>
+<p>最后，由<code>*big.Int</code>类型成员<code>R，S，V</code>来存放64bytes签名。<code>R</code>和<code>S</code>分别存放32bytes，<br><code>V</code>1bytes使恢复公钥时加速运算。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">SignTx</span><span class="params">(tx *Transaction, s Signer, prv *ecdsa.PrivateKey)</span> <span class="params">(*Transaction, error)</span></span> &#123;  </span><br><span class="line">    h := s.Hash(tx)  </span><br><span class="line">    sig, err := crypto.Sign(h[:], prv)  </span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;  </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>, err  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">return</span> tx.WithSignature(s, sig)  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以太坊也在github.com/ethereum/go-ethereum/core/types/transaction_signing.go中定义了直接生成交易的数字签名的函数<code>SignTx()</code>函数。</p>
+<hr>
+<h1 id="交易签名的验证"><a href="#交易签名的验证" class="headerlink" title="交易签名的验证"></a>交易签名的验证</h1><p>签名的验证，证明只有生成该签名的私钥所有者才能在该交易上产生这个签名。</p>
+<p>验证签名时，需要有签名<code>R</code>，<code>S</code>它们包含在交易之中。</p>
+<p>签名验证主要步骤：</p>
+<div class="note info"><ol>
+<li>由交易的hash值和签名得到账户公钥。</li>
+<li>使用公钥和签名通过椭圆曲线加密算法对交易进行验证。</li>
+</ol></div>
+<hr>
+<h2 id="相关代码-2"><a href="#相关代码-2" class="headerlink" title="相关代码"></a>相关代码</h2><p>以太坊对bitcoin的secp256k1 C库进行了封装，在<code>github.com/ethereum/go-ethereum/crypto/secp256k1</code>,定义了恢复公钥的函数<code>RecoverPubkey（）</code>和验证签名的函数<code>VerifySignature（）</code>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">RecoverPubkey</span><span class="params">(msg []<span class="keyword">byte</span>, sig []<span class="keyword">byte</span>)</span> <span class="params">([]<span class="keyword">byte</span>, error)</span></span> &#123;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>VerifySignature()</code>用来验证对应公钥的签名，传入对应交易的签名<code>R，S</code>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">VerifySignature</span><span class="params">(pubkey, msg, signature []<span class="keyword">byte</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">len</span>(msg) != <span class="number">32</span> || <span class="built_in">len</span>(signature) != <span class="number">64</span> || <span class="built_in">len</span>(pubkey) == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">	&#125;</span><br><span class="line">	sigdata := (*C.uchar)(unsafe.Pointer(&amp;signature[<span class="number">0</span>]))</span><br><span class="line">	msgdata := (*C.uchar)(unsafe.Pointer(&amp;msg[<span class="number">0</span>]))</span><br><span class="line">	keydata := (*C.uchar)(unsafe.Pointer(&amp;pubkey[<span class="number">0</span>]))</span><br><span class="line">	<span class="keyword">return</span> C.secp256k1_ext_ecdsa_verify(context, sigdata, msgdata, keydata, C.size_t(<span class="built_in">len</span>(pubkey))) != <span class="number">0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以太坊中也在<code>github.com/ethereum/go-ethereum/crypto</code>中定义了直接验证交易数字签名的函数<code>ValidateSignatureValues</code>，本质上是对上面的两个函数的封装。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ValidateSignatureValues</span><span class="params">(v <span class="keyword">byte</span>, r, s *big.Int, homestead <span class="keyword">bool</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> r.Cmp(common.Big1) &lt; <span class="number">0</span> || s.Cmp(common.Big1) &lt; <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> homestead &amp;&amp; s.Cmp(secp256k1halfN) &gt; <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> r.Cmp(secp256k1N) &lt; <span class="number">0</span> &amp;&amp; s.Cmp(secp256k1N) &lt; <span class="number">0</span> &amp;&amp; (v == <span class="number">0</span> || v == <span class="number">1</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    DianL
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://ldlovezyh.cn/2018/07/22/以太坊账户地址与交易签名/" title="以太坊账户地址与交易签名">http://ldlovezyh.cn/2018/07/22/以太坊账户地址与交易签名/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/椭圆曲线加密/" rel="tag"><i class="fa fa-tag"></i> 椭圆曲线加密</a>
+          
+            <a href="/tags/以太坊/" rel="tag"><i class="fa fa-tag"></i> 以太坊</a>
+          
+            <a href="/tags/GO/" rel="tag"><i class="fa fa-tag"></i> GO</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/21/最美是清欢/" rel="next" title="最美是清欢">
+                <i class="fa fa-chevron-left"></i> 最美是清欢
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://chuantu.biz/t6/341/1531317166x-1404795690.png"
+                alt="DianL" />
+            
+              <p class="site-author-name" itemprop="name">DianL</p>
+              <p class="site-description motion-element" itemprop="description">吾乃事奉无上至尊之人。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                 RSS
+	      </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/llllddd" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://weibo.com/u/2219770162" target="_blank" title="微博">
+                    
+                      <i class="fa fa-fw fa-weibo"></i>微博</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+              </a>
+            </div>
+          
+
+          
+          
+
+          
+<!--
+</br>
+<div id="music163player">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=320 height=86 src="//music.163.com/outchain/player?type=2&id=22755679&auto=1&height=66"></iframe>
+</div>
+-->
+
+<div id="music163player">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=536098015&auto=1&height=66"></iframe>
+</div>
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#以太坊账户地址"><span class="nav-number">1.</span> <span class="nav-text">以太坊账户地址</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#椭圆曲线加密"><span class="nav-number">1.1.</span> <span class="nav-text">椭圆曲线加密</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#加密算法-ECDH"><span class="nav-number">1.1.1.</span> <span class="nav-text">加密算法(ECDH)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数字签名算法-ECDSA"><span class="nav-number">1.1.2.</span> <span class="nav-text">数字签名算法(ECDSA)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#哈希算法"><span class="nav-number">1.2.</span> <span class="nav-text">哈希算法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#账户地址的生成"><span class="nav-number">2.</span> <span class="nav-text">账户地址的生成</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#相关代码"><span class="nav-number">2.1.</span> <span class="nav-text">相关代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#交易的签名"><span class="nav-number">3.</span> <span class="nav-text">交易的签名</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#相关代码-1"><span class="nav-number">3.1.</span> <span class="nav-text">相关代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#交易签名的验证"><span class="nav-number">4.</span> <span class="nav-text">交易签名的验证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#相关代码-2"><span class="nav-number">4.1.</span> <span class="nav-text">相关代码</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DianL</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.3"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.3"></script>
+
+
+  
+
+
+</body>
+</html>
