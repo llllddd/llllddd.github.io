@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.cat.net/css?family=Roboto Slab:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="椭圆曲线加密,以太坊,GO," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="LoveLotus" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="以太坊在网络传输过程中数据是经过RLP编码之后进行传输的。 区块广播区块广播以及区块的同步过程均涉及到RLP编码。 当区块由本地矿工封印之后，同时会向信道中传入一个事件，包含了事件的时间，以及数据即type.block类型的区块结构体。 1234type TypeMuxEvent struct &amp;#123;	Time time.Time	Data interface&amp;#123;&amp;#125;&amp;#12">
+<meta name="keywords" content="椭圆曲线加密,以太坊,GO">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RLP编码与区块解析">
+<meta property="og:url" content="http://ldlovezyh.cn/2018/08/08/RLP编码与区块解析/index.html">
+<meta property="og:site_name" content="LoveLotus">
+<meta property="og:description" content="以太坊在网络传输过程中数据是经过RLP编码之后进行传输的。 区块广播区块广播以及区块的同步过程均涉及到RLP编码。 当区块由本地矿工封印之后，同时会向信道中传入一个事件，包含了事件的时间，以及数据即type.block类型的区块结构体。 1234type TypeMuxEvent struct &amp;#123;	Time time.Time	Data interface&amp;#123;&amp;#125;&amp;#12">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-30T06:58:08.933Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RLP编码与区块解析">
+<meta name="twitter:description" content="以太坊在网络传输过程中数据是经过RLP编码之后进行传输的。 区块广播区块广播以及区块的同步过程均涉及到RLP编码。 当区块由本地矿工封印之后，同时会向信道中传入一个事件，包含了事件的时间，以及数据即type.block类型的区块结构体。 1234type TypeMuxEvent struct &amp;#123;	Time time.Time	Data interface&amp;#123;&amp;#125;&amp;#12">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: 'undefined',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+<script>
+    (function(){
+        if('123'){
+            if (prompt('Password:') !== '123'){
+                alert('ERROR');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+
+  <link rel="canonical" href="http://ldlovezyh.cn/2018/08/08/RLP编码与区块解析/"/>
+
+
+
+
+
+  <title>RLP编码与区块解析 | LoveLotus</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b0339818ee7d3ca09ef6f121603241e1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">LoveLotus</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-essay">
+          <a href="/categories/专栏" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-star"></i> <br />
+            
+            星
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ldlovezyh.cn/2018/08/08/RLP编码与区块解析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="DianL">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://wx2.sinaimg.cn/mw690/844f0132gy1fuqqkjjtr8j20g40g4tof.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LoveLotus">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">RLP编码与区块解析</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-08T00:00:00+08:00">
+                2018-08-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/以太坊/" itemprop="url" rel="index">
+                    <span itemprop="name">以太坊</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>以太坊在网络传输过程中数据是经过RLP编码之后进行传输的。</p>
+<h2 id="区块广播"><a href="#区块广播" class="headerlink" title="区块广播"></a>区块广播</h2><p>区块广播以及区块的同步过程均涉及到RLP编码。</p>
+<p>当区块由本地矿工封印之后，同时会向信道中传入一个事件，包含了事件的时间，以及数据即<code>type.block</code>类型的区块结构体。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> TypeMuxEvent <span class="keyword">struct</span> &#123;</span><br><span class="line">	Time time.Time</span><br><span class="line">	Data <span class="keyword">interface</span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同时，<code>worker</code>维护的一个事件管理器，会将新挖出的区块作为一个事件开始进行广播。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(self *worker)</span><span class="title">wait</span><span class="params">()</span></span>&#123;</span><br><span class="line">...</span><br><span class="line">self.mux.Post(core.NewMinedBlockEvent&#123;Block: block&#125;)</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>广播的过程即，将新区块事件，添加到一个事件队列内，该队列将分派，不同类型事件给订阅此信道的接受者。同时将新区快事件添加到广播信道内。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> TypeMuxSubscription <span class="keyword">struct</span> &#123;</span><br><span class="line">	mux     *TypeMux</span><br><span class="line">	created time.Time</span><br><span class="line">	closeMu sync.Mutex</span><br><span class="line">	closing <span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line">	closed  <span class="keyword">bool</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// these two are the same channel. they are stored separately so</span></span><br><span class="line">	<span class="comment">// postC can be set to nil without affecting the return value of</span></span><br><span class="line">	<span class="comment">// Chan.</span></span><br><span class="line">	postMu sync.RWMutex</span><br><span class="line">	readC  &lt;-<span class="keyword">chan</span> *TypeMuxEvent</span><br><span class="line">	postC  <span class="keyword">chan</span>&lt;- *TypeMuxEvent</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>至此，新区块广播的初始工作已经完成。</p>
+<p>以太坊服务在启动时，同时会开启P2P服务，具体为创建一个管理相关协仪结构体。</p>
+<p>开启节点服务后，即开始监听相关事件：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *Ethereum)</span> <span class="title">Start</span><span class="params">(srvr *p2p.Server)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	<span class="comment">// Start the bloom bits servicing goroutines</span></span><br><span class="line">	s.startBloomHandlers()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Start the RPC service</span></span><br><span class="line">	s.netRPCService = ethapi.NewPublicNetAPI(srvr, s.NetVersion())</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Figure out a max peers count based on the server limits</span></span><br><span class="line">	maxPeers := srvr.MaxPeers</span><br><span class="line">	<span class="keyword">if</span> s.config.LightServ &gt; <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> s.config.LightPeers &gt;= srvr.MaxPeers &#123;</span><br><span class="line">			<span class="keyword">return</span> fmt.Errorf(<span class="string">"invalid peer config: light peer count (%d) &gt;= total peer count (%d)"</span>, s.config.LightPeers, srvr.MaxPeers)</span><br><span class="line">		&#125;</span><br><span class="line">		maxPeers -= s.config.LightPeers</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// Start the networking layer and the light server if requested</span></span><br><span class="line">	s.protocolManager.Start(maxPeers)</span><br><span class="line">	<span class="keyword">if</span> s.lesServer != <span class="literal">nil</span> &#123;</span><br><span class="line">		s.lesServer.Start(srvr)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>节点服务，包含对相关信道的建立，远程调用服务的建立，以及网络层面上对相关服务器节点P2P协议的启用。</p>
+<p>启用节点协议，即由协议管理器，建立对应的事件监听信道。实际上对应了三个循环:</p>
+<div class="note info"><ol>
+<li>广播新出现的交易对象。</li>
+<li>广播新挖掘出现的区块。</li>
+<li>定时与相邻个体进行区块链的强制同步。</li>
+<li>将新出现的交易对象均匀的同步给相邻个体。</li>
+</ol></div>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(pm *ProtocolManager)</span> <span class="title">Start</span><span class="params">(maxPeers <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	pm.maxPeers = maxPeers</span><br><span class="line"></span><br><span class="line">	<span class="comment">// broadcast transactions</span></span><br><span class="line">	pm.txsCh = <span class="built_in">make</span>(<span class="keyword">chan</span> core.NewTxsEvent, txChanSize)</span><br><span class="line">	pm.txsSub = pm.txpool.SubscribeNewTxsEvent(pm.txsCh)</span><br><span class="line">	<span class="keyword">go</span> pm.txBroadcastLoop()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// broadcast mined blocks</span></span><br><span class="line">	pm.minedBlockSub = pm.eventMux.Subscribe(core.NewMinedBlockEvent&#123;&#125;)</span><br><span class="line">	<span class="keyword">go</span> pm.minedBroadcastLoop()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// start sync handlers</span></span><br><span class="line">	<span class="keyword">go</span> pm.syncer()</span><br><span class="line">	<span class="keyword">go</span> pm.txsyncLoop()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>创建协议管理结构体时，其事件多路复用器<code>event.TypeMux</code>为eth客户端在构建挖矿结构体时的公用对象。当启用服务时，协议管理会将其成员<code>event.TypeMux</code>订阅一个新区块事件，并且事件队列添加到成员中。</p>
+<p>监听新出现区块的循环会扫描，事件队列的信道，如果是一个新区块事件，那么将广播区块，这里的事件队列，与挖矿过程中区块事件存储的是相同的队列。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(pm *ProtocolManager)</span> <span class="title">minedBroadcastLoop</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// automatically stops if unsubscribe</span></span><br><span class="line">	<span class="keyword">for</span> obj := <span class="keyword">range</span> pm.minedBlockSub.Chan() &#123;</span><br><span class="line">		<span class="keyword">switch</span> ev := obj.Data.(<span class="keyword">type</span>) &#123;</span><br><span class="line">		<span class="keyword">case</span> core.NewMinedBlockEvent:</span><br><span class="line">			pm.BroadcastBlock(ev.Block, <span class="literal">true</span>)  <span class="comment">// First propagate block to peers</span></span><br><span class="line">			pm.BroadcastBlock(ev.Block, <span class="literal">false</span>) <span class="comment">// Only then announce to the rest</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>广播的过程实际上是，将新区块信息扩散至其它节点的过程。</p>
+<p>具体流程为:</p>
+<blockquote>
+<ol>
+<li>选取节点队列中不包含此区块hash任务的节点。</li>
+<li>计算totaldifficulty</li>
+<li>将区块发送至其它子节点</li>
+</ol>
+</blockquote>
+<p>将新区块信息发送至其它节点的过程异步发送：</p>
+<blockquote>
+<ol>
+<li>将区块与总困难值添加至广播事件队列中。</li>
+<li>将新区哈希添加至节点已知区块队列中。</li>
+</ol>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *peer)</span> <span class="title">AsyncSendNewBlock</span><span class="params">(block *types.Block, td *big.Int)</span></span> &#123;</span><br><span class="line">	<span class="keyword">select</span> &#123;</span><br><span class="line">	<span class="keyword">case</span> p.queuedProps &lt;- &amp;propEvent&#123;block: block, td: td&#125;:</span><br><span class="line">		p.knownBlocks.Add(block.Hash())</span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		p.Log().Debug(<span class="string">"Dropping block propagation"</span>, <span class="string">"number"</span>, block.NumberU64(), <span class="string">"hash"</span>, block.Hash())</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那么包含此节点的节点，便会处理节点中的信息。与此节点握手。同时处理节点发来的信息。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(pm *ProtocolManager)</span> <span class="title">handle</span><span class="params">(p *peer)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>与节点握手的过程中，会注册该节点，该节点将其事件队列中的信息广播。发送区块节总难度的信息。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(ps *peerSet)</span> <span class="title">Register</span><span class="params">(p *peer)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	ps.lock.Lock()</span><br><span class="line">	<span class="keyword">defer</span> ps.lock.Unlock()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> ps.closed &#123;</span><br><span class="line">		<span class="keyword">return</span> errClosed</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> _, ok := ps.peers[p.id]; ok &#123;</span><br><span class="line">		<span class="keyword">return</span> errAlreadyRegistered</span><br><span class="line">	&#125;</span><br><span class="line">	ps.peers[p.id] = p</span><br><span class="line">	<span class="keyword">go</span> p.broadcast()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *peer)</span> <span class="title">broadcast</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">select</span> &#123;</span><br><span class="line">		<span class="keyword">case</span> txs := &lt;-p.queuedTxs:</span><br><span class="line">			<span class="keyword">if</span> err := p.SendTransactions(txs); err != <span class="literal">nil</span> &#123;</span><br><span class="line">				<span class="keyword">return</span></span><br><span class="line">			&#125;</span><br><span class="line">			p.Log().Trace(<span class="string">"Broadcast transactions"</span>, <span class="string">"count"</span>, <span class="built_in">len</span>(txs))</span><br><span class="line"></span><br><span class="line">		<span class="keyword">case</span> prop := &lt;-p.queuedProps:</span><br><span class="line">			<span class="keyword">if</span> err := p.SendNewBlock(prop.block, prop.td); err != <span class="literal">nil</span> &#123;</span><br><span class="line">				<span class="keyword">return</span></span><br><span class="line">			&#125;</span><br><span class="line">			p.Log().Trace(<span class="string">"Propagated block"</span>, <span class="string">"number"</span>, prop.block.Number(), <span class="string">"hash"</span>, prop.block.Hash(), <span class="string">"td"</span>, prop.td)</span><br><span class="line"></span><br><span class="line">		<span class="keyword">case</span> block := &lt;-p.queuedAnns:</span><br><span class="line">			<span class="keyword">if</span> err := p.SendNewBlockHashes([]common.Hash&#123;block.Hash()&#125;, []<span class="keyword">uint64</span>&#123;block.NumberU64()&#125;); err != <span class="literal">nil</span> &#123;</span><br><span class="line">				<span class="keyword">return</span></span><br><span class="line">			&#125;</span><br><span class="line">			p.Log().Trace(<span class="string">"Announced block"</span>, <span class="string">"number"</span>, block.Number(), <span class="string">"hash"</span>, block.Hash())</span><br><span class="line"></span><br><span class="line">		<span class="keyword">case</span> &lt;-p.term:</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>发送的信息包含两部分内容:</p>
+<div class="note info"><ol>
+<li>信息类型: 新区块则为0x07</li>
+<li>RLP编码后的信息，编码的内容为区块与总困难值。</li>
+</ol></div>
+<p>处理信息的过程是根据信息类型来采取对应的处理机制。<br>处理新区块的策略为:</p>
+<blockquote>
+<ol>
+<li>将信息解码</li>
+<li>将发送新区块的节点标记。</li>
+<li>将区块加入到获取队列中。</li>
+</ol>
+</blockquote>
+<p>将获取队列中的区块验证并插入到本地区块链中。</p>
+<hr>
+<h2 id="RLP编码"><a href="#RLP编码" class="headerlink" title="RLP编码"></a>RLP编码</h2><p>递归前缀长度( Recursive Length Prefix)编码，是一种对任意结构化的数据进行序列化的方法。</p>
+<p>定义了RLP编码规则的对象有两类，byte数组和bytes数组的数组。</p>
+<p>byte数组的编码规则可以适用于可以转换为byte类型的其它变量。如string，int，big.int等。</p>
+<p>而像struct，map等这类复杂类型则可以转换为byte数组的数组，它们适用于第二类编码规则。</p>
+<hr>
+<h3 id="byte编码规则"><a href="#byte编码规则" class="headerlink" title="[]byte编码规则"></a>[]byte编码规则</h3><ol>
+<li>若长度为1字节且值小于128，编码值不变。</li>
+<li>若byte数组长度小于56字节，长度+128+数组本身。</li>
+<li>数组长度的大端序表示，大端序表示数组长度的数字。183+大端序数组长度数字+数组长度+数组本身.</li>
+</ol>
+<p>规则1</p>
+<blockquote>
+<p>[]byte{1}编码后的结果为1<br>[]byte{0x7E}编码后的结果为7E<br>uint32(127)编码后的结果为7E<br>big.NewInt(1)编码后的结果为1<br>string(‘a’)编码后的结果为61</p>
+</blockquote>
+<p>规则2</p>
+<blockquote>
+<p>[]byte{}编码后的结果为80<br>big.NewInt(0)编码后的结果为80<br>[]byte{1,2,3}编码后的结果为83010203<br>[]byte{0x80}编码后的结果为8180<br>string(“dog”)编码后的结果为83646F67</p>
+</blockquote>
+<p>规则3</p>
+<blockquote>
+<p>规则3首先将数组长度表示出来，加上前缀183。<br>理论上可以表示最大的数组长度为$2^64$字节。<br>256个a组成的字符串编码:<br>首先字符串长度为256：大端序数字为 0100需要2字节来表示，因此前缀为185<br>所以RLP编码后的结果为:<br>18501006161…</p>
+</blockquote>
+<hr>
+<h3 id="byte编码规则-1"><a href="#byte编码规则-1" class="headerlink" title="[][]byte编码规则"></a>[][]byte编码规则</h3><p>对于一些其它的复杂结构体，以及基础类型的slice都可以转换为[]byte数组列表，因为其数据成员都可以转换为[]byte类型使用第一类的转换规则。</p>
+<div class="note info"><ol>
+<li>若数组总长度小于56，192+长度+数组</li>
+<li>其它，大端序表示数组长度的数字。247+大端序数组长度数字+数组长度+数组本身.</li>
+</ol></div>
+<p>规则1</p>
+<blockquote>
+<p>[]uint{} 编码后的结果为: “C0”<br>[]uint{1,2,3}编码后的结果为:”C3010203“<br>[]string{“aaa”,”bbb”}编码后的结果为:”C88361616183626262”<br>struct{uint : 5, string : “aaa”}编码后的结果为：<br>C50583616161</p>
+</blockquote>
+<hr>
+<h3 id="解码"><a href="#解码" class="headerlink" title="解码"></a>解码</h3><p>由编码规则可以知道，第一个字节记录了编码数据的长度，并且根据大小可以判断数据属于那种编码规则以及解码数据长度的大小是多少。</p>
+<p>记第一个字节为L<br>L的大小小于192则是由第一类编码规则解码。</p>
+<blockquote>
+<ol>
+<li>若$L\in[0,128)$, 表示一个字节本身。</li>
+<li>若$L\in[128,184)$, 表示长度不超过55字节的数组长度为L-128.</li>
+<li>若$L\in[184,192)$, 最长能表示为$2^{64}$字节长的数组，长度为从第二个字节起长度为L-183的整数。</li>
+<li>若$L\in[192,248)$ 编码后长度小于56的byte数组列表，长度为L-192</li>
+<li>若$L\in[248,256)$ 编码后长度大于56的byte数组列表，长度为从第二个字节起长度为L-247的整数。</li>
+</ol>
+</blockquote>
+<p>这样对于复杂的结构体只要其成员变量的顺序不变，就可以根据编码后的数据解码，依次得到对应成员的数据，进而得到远结构体。</p>
+<p>区块结构体包含了大量的数据成员，但是根据编码规则最终可以解析得到原区块的数据。</p>
+<p>如区块数据：</p>
+<blockquote>
+<p>f90260|f901f9|a0|83cafc574e1f51ba9dc0568fc617a08ea2429fb384059c972f13b19fa1c8dd55|<br>a0|1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347|94|<br>8888f1f195afa192cfee860698584c030f4c9db1|a0|<br>ef1552a40b7165c3cd773806b9e0c165b75356e0314bf0706f279c729f51e017|a0|<br>5fe50b260da6308036625b850b5d6ced6d0a9f814c0688bc91ffb7b7a3a54b67|a0|<br>bc37d79753ad738a6dac4921e57392f145d8887476de3f783dfa7edae9283e52|b90100|<br>0000000000000000000000000000000000000000000000000000000000000000000000000<br>0000000000000000000000000000000000000000000000000000000000000000000000000<br>0000000000000000000000000000000000000000000000000000000000000000000000000<br>0000000000000000000000000000000000000000000000000000000000000000000000000<br>0000000000000000000000000000000000000000000000000000000000000000000000000<br>0000000000000000000000000000000000000000000000000000000000000000000000000<br>00000000000000000000000000000000000000000000000000000000000000000000000000|<br>83|020000|01|83|2fefd8|82|5208|84|5506eb07|80|a0|<br>bd4472abb6659ebe3ee06ee4d7b72a00a9f4d001caca51342001075469aff498|88|<br>a13a5a8c8f2bb1c4|f8|61|f8|5f|80|0a|82|c350|94|<br>095e7baea6a6c7c4c2dfeb977efac326af552d87|0a|80|1b|a0|<br>9bea4c4daac7c7c52e093e6a4c35dbbcf8856f1af7b059ba20253e70848d094f|a0|<br>8a8fae537ce25ed8cb5af9adac3f141af69bd515bd2ba031522df09b97dd72b1|c0</p>
+</blockquote>
+<p>可以根据编码信息得到完整的type.block结构体所有信息。</p>
+<p>首先 f9 249 表示整个区块编码后的尺寸长度为2字节，所以0260为608字节。</p>
+<p>接下来第一个被编码的为区块头 f901f9表明区块头的大小为505字节。<br>区块头中第一个被编码的为ParentHash: a0为160表明hash为32字节因此ParentHash为: 83cafc574e1f51ba9dc0568fc617a08ea2429fb384059c972f13b19fa1c8dd55</p>
+<p>接下来为UncleHash 同样 a0表明UncleHash为32字节:<br>1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347</p>
+<p>接下来为Coinbase这是一个账户地址为20字节,94表示长度为20字节:<br>8888f1f195afa192cfee860698584c030f4c9db1<br>依次类推直到区块头解析完毕。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Header <span class="keyword">struct</span> &#123;</span><br><span class="line">	ParentHash  common.Hash    <span class="string">`json:"parentHash"       gencodec:"required"`</span></span><br><span class="line">	UncleHash   common.Hash    <span class="string">`json:"sha3Uncles"       gencodec:"required"`</span></span><br><span class="line">	Coinbase    common.Address <span class="string">`json:"miner"            gencodec:"required"`</span></span><br><span class="line">	Root        common.Hash    <span class="string">`json:"stateRoot"        gencodec:"required"`</span></span><br><span class="line">	TxHash      common.Hash    <span class="string">`json:"transactionsRoot" gencodec:"required"`</span></span><br><span class="line">	ReceiptHash common.Hash    <span class="string">`json:"receiptsRoot"     gencodec:"required"`</span></span><br><span class="line">	Bloom       Bloom          <span class="string">`json:"logsBloom"        gencodec:"required"`</span></span><br><span class="line">	Difficulty  *big.Int       <span class="string">`json:"difficulty"       gencodec:"required"`</span></span><br><span class="line">	Number      *big.Int       <span class="string">`json:"number"           gencodec:"required"`</span></span><br><span class="line">	GasLimit    <span class="keyword">uint64</span>         <span class="string">`json:"gasLimit"         gencodec:"required"`</span></span><br><span class="line">	GasUsed     <span class="keyword">uint64</span>         <span class="string">`json:"gasUsed"          gencodec:"required"`</span></span><br><span class="line">	Time        *big.Int       <span class="string">`json:"timestamp"        gencodec:"required"`</span></span><br><span class="line">	Extra       []<span class="keyword">byte</span>         <span class="string">`json:"extraData"        gencodec:"required"`</span></span><br><span class="line">	MixDigest   common.Hash    <span class="string">`json:"mixHash"          gencodec:"required"`</span></span><br><span class="line">	Nonce       BlockNonce     <span class="string">`json:"nonce"            gencodec:"required"`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">区块结构体的相关代码：</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Block <span class="keyword">struct</span> &#123;</span><br><span class="line">	header       *Header</span><br><span class="line">	uncles       []*Header</span><br><span class="line">	transactions Transactions</span><br><span class="line"></span><br><span class="line">	<span class="comment">// caches</span></span><br><span class="line">	hash atomic.Value</span><br><span class="line">	size atomic.Value</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Td is used by package core to store the total difficulty</span></span><br><span class="line">	<span class="comment">// of the chain up to and including the block.</span></span><br><span class="line">	td *big.Int</span><br><span class="line"></span><br><span class="line">	<span class="comment">// These fields are used by package eth to track</span></span><br><span class="line">	<span class="comment">// inter-peer block relay.</span></span><br><span class="line">	ReceivedAt   time.Time</span><br><span class="line">	ReceivedFrom <span class="keyword">interface</span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">交易结构体相关代码：</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Transaction <span class="keyword">struct</span> &#123;</span><br><span class="line">	data txdata</span><br><span class="line">	<span class="comment">// caches</span></span><br><span class="line">	hash atomic.Value</span><br><span class="line">	size atomic.Value</span><br><span class="line">	from atomic.Value</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> txdata <span class="keyword">struct</span> &#123;</span><br><span class="line">	AccountNonce <span class="keyword">uint64</span>          <span class="string">`json:"nonce"    gencodec:"required"`</span></span><br><span class="line">	Price        *big.Int        <span class="string">`json:"gasPrice" gencodec:"required"`</span></span><br><span class="line">	GasLimit     <span class="keyword">uint64</span>          <span class="string">`json:"gas"      gencodec:"required"`</span></span><br><span class="line">	Recipient    *common.Address <span class="string">`json:"to"       rlp:"nil"`</span> <span class="comment">// nil means contract creation</span></span><br><span class="line">	Amount       *big.Int        <span class="string">`json:"value"    gencodec:"required"`</span></span><br><span class="line">	Payload      []<span class="keyword">byte</span>          <span class="string">`json:"input"    gencodec:"required"`</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// Signature values</span></span><br><span class="line">	V *big.Int <span class="string">`json:"v" gencodec:"required"`</span></span><br><span class="line">	R *big.Int <span class="string">`json:"r" gencodec:"required"`</span></span><br><span class="line">	S *big.Int <span class="string">`json:"s" gencodec:"required"`</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// This is only used when marshaling to JSON.</span></span><br><span class="line">	Hash *common.Hash <span class="string">`json:"hash" rlp:"-"`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    DianL
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://ldlovezyh.cn/2018/08/08/RLP编码与区块解析/" title="RLP编码与区块解析">http://ldlovezyh.cn/2018/08/08/RLP编码与区块解析/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/椭圆曲线加密/" rel="tag"><i class="fa fa-tag"></i> 椭圆曲线加密</a>
+          
+            <a href="/tags/以太坊/" rel="tag"><i class="fa fa-tag"></i> 以太坊</a>
+          
+            <a href="/tags/GO/" rel="tag"><i class="fa fa-tag"></i> GO</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/01/以太坊POW算法Ethash/" rel="next" title="以太坊Pow共识算法">
+                <i class="fa fa-chevron-left"></i> 以太坊Pow共识算法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/29/最美是清欢/" rel="prev" title="最美是清欢">
+                最美是清欢 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://wx2.sinaimg.cn/mw690/844f0132gy1fuqqkjjtr8j20g40g4tof.jpg"
+                alt="DianL" />
+            
+              <p class="site-author-name" itemprop="name">DianL</p>
+              <p class="site-description motion-element" itemprop="description">吾乃事奉无上至尊之人。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                 RSS
+	      </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/llllddd" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://weibo.com/u/2219770162" target="_blank" title="微博">
+                    
+                      <i class="fa fa-fw fa-weibo"></i>微博</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+              </a>
+            </div>
+          
+
+          
+          
+
+          
+<!--
+</br>
+<div id="music163player">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=320 height=86 src="//music.163.com/outchain/player?type=2&id=22755679&auto=1&height=66"></iframe>
+</div>
+-->
+
+<div id="music163player">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=536098015&auto=1&height=66"></iframe>
+</div>
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#区块广播"><span class="nav-number">1.</span> <span class="nav-text">区块广播</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RLP编码"><span class="nav-number">2.</span> <span class="nav-text">RLP编码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#byte编码规则"><span class="nav-number">2.1.</span> <span class="nav-text">[]byte编码规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#byte编码规则-1"><span class="nav-number">2.2.</span> <span class="nav-text">[][]byte编码规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解码"><span class="nav-number">2.3.</span> <span class="nav-text">解码</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DianL</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.3"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.3"></script>
+
+
+  
+
+
+</body>
+</html>

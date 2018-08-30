@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.cat.net/css?family=Roboto Slab:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="椭圆曲线加密,以太坊,GO," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="LoveLotus" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="区块链中主要使用了公钥加密算法，具体为椭圆曲线加密及其算法。 经常看到的如ECC，ECDH，ECDSA，就是一系列与椭圆曲线有关的缩写。ECC为椭圆曲线密码(Elliptic Curve Cryptography)的缩写。其它两个意思为基于椭圆曲线的密码算法和签名算法。 此外其它的公钥密码方案也得到大量使用，如著名的 RSA密码，DSA 和DH(Diffie Hellman)密码。它们都是基于有限">
+<meta name="keywords" content="椭圆曲线加密,以太坊,GO">
+<meta property="og:type" content="article">
+<meta property="og:title" content="椭圆曲线加密原理">
+<meta property="og:url" content="http://ldlovezyh.cn/2018/07/15/椭圆曲线加密原理/index.html">
+<meta property="og:site_name" content="LoveLotus">
+<meta property="og:description" content="区块链中主要使用了公钥加密算法，具体为椭圆曲线加密及其算法。 经常看到的如ECC，ECDH，ECDSA，就是一系列与椭圆曲线有关的缩写。ECC为椭圆曲线密码(Elliptic Curve Cryptography)的缩写。其它两个意思为基于椭圆曲线的密码算法和签名算法。 此外其它的公钥密码方案也得到大量使用，如著名的 RSA密码，DSA 和DH(Diffie Hellman)密码。它们都是基于有限">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/844f0132gy1furlbsoeacj20bp0bp3yt.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/844f0132gy1furlbirv08j20bp0bqmxg.jpg">
+<meta property="og:updated_time" content="2018-08-30T04:06:07.804Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="椭圆曲线加密原理">
+<meta name="twitter:description" content="区块链中主要使用了公钥加密算法，具体为椭圆曲线加密及其算法。 经常看到的如ECC，ECDH，ECDSA，就是一系列与椭圆曲线有关的缩写。ECC为椭圆曲线密码(Elliptic Curve Cryptography)的缩写。其它两个意思为基于椭圆曲线的密码算法和签名算法。 此外其它的公钥密码方案也得到大量使用，如著名的 RSA密码，DSA 和DH(Diffie Hellman)密码。它们都是基于有限">
+<meta name="twitter:image" content="http://wx4.sinaimg.cn/mw690/844f0132gy1furlbsoeacj20bp0bp3yt.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: 'undefined',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+<script>
+    (function(){
+        if('123'){
+            if (prompt('Password:') !== '123'){
+                alert('ERROR');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+
+  <link rel="canonical" href="http://ldlovezyh.cn/2018/07/15/椭圆曲线加密原理/"/>
+
+
+
+
+
+  <title>椭圆曲线加密原理 | LoveLotus</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b0339818ee7d3ca09ef6f121603241e1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">LoveLotus</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-essay">
+          <a href="/categories/专栏" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-star"></i> <br />
+            
+            星
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ldlovezyh.cn/2018/07/15/椭圆曲线加密原理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="DianL">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://wx2.sinaimg.cn/mw690/844f0132gy1fuqqkjjtr8j20g40g4tof.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LoveLotus">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">椭圆曲线加密原理</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-15T00:00:00+08:00">
+                2018-07-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/以太坊/" itemprop="url" rel="index">
+                    <span itemprop="name">以太坊</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>区块链中主要使用了公钥加密算法，具体为椭圆曲线加密及其算法。</p>
+<p>经常看到的如<code>ECC</code>，<code>ECDH</code>，<code>ECDSA</code>，就是一系列与椭圆曲线有关的缩写。<code>ECC</code>为椭圆曲线密码(Elliptic Curve Cryptography)的缩写。其它两个意思为基于椭圆曲线的密码算法和签名算法。</p>
+<p>此外其它的公钥密码方案也得到大量使用，如著名的 RSA密码，DSA 和DH(Diffie Hellman)密码。它们都是基于有限域上的模运算相关一些困难问题而设计出的。</p>
+<p>并且注意到<code>DH</code>和上面的<code>ECDH</code>有两个相同的字母，实际上这两种算法是非常相似的。</p>
+<p><code>DH</code>表示Diffie Hellman算法，它基于有限域上的离散对数问题设计，顾名思义<code>ECDH</code>可理解为椭圆曲线上的Diffie Hellman算法，即基于椭圆曲线上的离散对数问题设计的。</p>
+<hr>
+<h2 id="有限域和离散对数"><a href="#有限域和离散对数" class="headerlink" title="有限域和离散对数"></a>有限域和离散对数</h2><p>简单来说，有限域是一个由有限个元素组成的集合，例如将整数模一个素数$p$之后得到的集合，就可以得到一个有限域，通常记为$\mathbb{Z}_p$或者$\mathbb{F}_p$。如$\mathbb{F}_5= {0,1,2,3,4} $包含所有模5可能的结果。</p>
+<p>容易看出,有限域$\mathbb{F}_p$包含所有$\bmod p$从0到$p-1$的整数。</p>
+<p>有限域上定义了两种运算：称为加法(+)和乘法(*), 两种运算对于有限域中的元素来说都是封闭的且满足结合律和交换律。</p>
+<p>对乘法有特殊的元素单位元即相当于整数中的1，这保证了乘法存在逆元从而使有限域中的元素做除法运算得到的结果还在有限域中，达到封闭的要求。如：$\mathbb{F}_5$中$2*3\bmod 5 =1$,则2的逆元为3，3依然是在有限域中。</p>
+<p>显然所有的整数不作成一个有限域，因为任意一个整数的逆为一个分数。</p>
+<p>对加法同样定义逆运算即减法，因此需要特殊的元素零元即0，保证封闭性。</p>
+<p>以$\mathbb{F}_{5}$为例具体看一下这些运算：</p>
+<div class="note default"><p>加法：$(1+2)\bmod5=3$<br>减法：$(1-2)\bmod5=4$<br>加法逆：因为$(2+(-2)) \bmod5=(2+3)\bmod5=0$所以$-2\bmod5=3$<br>乘法：$2\ast4\bmod5=3$<br>除法：$(2\div3)\bmod5=4$,除法运算开销很大实际上是通过先计算逆元再计算乘法得到的，$2\ast 3^{-1}\bmod5=2\ast 2\bmod5=4$<br>乘法逆：因为$2\ast2^{-1}\bmod5=2\ast3\bmod5=1$所以$2^{-1}\bmod5=3$</p></div>
+<p>上面的例子可以看到，有限域上的运算最终都要模上素数$p$,而加法的逆元算和乘法的逆元算实际上是求解$(2-x)\bmod5=0$和$2\ast x \bmod 5=1$得到的。前者很容易计算，但计算后者就需要很大的开销。</p>
+<p>对有限域要选取素数$p$来作为模数，因为乘法的逆运算要满足封闭性,若选取一个合数如$4$,则$2\ast x\bmod 4 = 1$是没有解的，那么自然不能满足封闭性的要求。</p>
+<hr>
+<h3 id="除法运算"><a href="#除法运算" class="headerlink" title="除法运算"></a>除法运算</h3><p>在密码设计中$p$通常是选取一个很大的素数$O(2^{256})$，那么有限域中除法计算的结果就不那么容易得到了。</p>
+<p>例如，计算$2\div3\bmod 5$,可以转换成乘法计算$2\ast 3^{-1}\bmod 5$ ，即求解方程$3\ast x\bmod 5=1$。</p>
+<p>通常使用<strong>扩展欧几里得算法</strong><a href="https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm" target="_blank" rel="noopener">(extended Eucilidean algorithm )</a>可以求得某个元素的的乘法逆元。Go语言代码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//欧几里得算法求最大公因数,(x,y)和（x,xmody）的最大公约数相同</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">gcd</span><span class="params">(x,y <span class="keyword">int</span>)</span> <span class="title">int</span></span>&#123;</span><br><span class="line">	<span class="keyword">for</span> y!=<span class="number">0</span>&#123;</span><br><span class="line">		x,y=y,x%y</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> x</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//扩展欧几里得算法，对于x,y必存在整数u，v使得gcd(x,y)=u*x+v*y</span></span><br><span class="line"><span class="comment">//档x,y互素时则返回的u即满足x*u mod y=1</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">extendeGcd</span><span class="params">(x, y <span class="keyword">int</span>)</span> <span class="params">(gcd, u, v <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">         u, old_u := <span class="number">0</span>, <span class="number">1</span></span><br><span class="line">         v, old_v := <span class="number">1</span>, <span class="number">0</span></span><br><span class="line">         r, old_r := y, x</span><br><span class="line"> </span><br><span class="line">         <span class="keyword">for</span> r != <span class="number">0</span> &#123;</span><br><span class="line">                 quotient := <span class="keyword">int</span>(old_r / r)</span><br><span class="line">                 old_r, r = r, old_r-quotient*r</span><br><span class="line">                 old_u, u = u, old_u-quotient*u</span><br><span class="line">                 old_v, v = v, old_v-quotient*v</span><br><span class="line">         &#125;</span><br><span class="line"> </span><br><span class="line">         <span class="keyword">return</span> old_r, old_u, old_v</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="群和离散对数问题"><a href="#群和离散对数问题" class="headerlink" title="群和离散对数问题"></a>群和离散对数问题</h3><p>由有限域的定义，可以看到有限域最重要的特征是有限域上的元素对于其上定义的两种运算乘法和加法都是封闭的。</p>
+<p>把去掉零元的有限域记为$\mathbb{F}^{\ast}_{p}$。以$\mathbb{F}^{\ast}_5={1,2,3,4}$为例，此时，对加法来说没有零元，那么集合中元素的加法就是不封闭的了，因为会出现$2+3\bmod5=0$而$0\notin\mathbb{F}^{\ast}_5$这种情况。</p>
+<p>对于乘法，单位元1依然在集合里，因此元素的逆也在集合里，集合里的元素对乘法依然是封闭的，把这些元素组成的集合称为由元素的乘法作成的一个<strong>群</strong><a href="https://en.wikipedia.org/wiki/Group_(mathematics" target="_blank" rel="noopener">(group )</a>)也称为<strong>乘群</strong>。</p>
+<p>此时群是针对集合上的一种运算而言，而有限域在集合上定义了两种运算，运算的封闭性是它们都有的重要性质。</p>
+<p>观察群$\mathbb{F}^{\ast}_5$,对于群里面只有乘法运算$\times$,我们对其中的一个元素$2$作连续的累乘运算，即乘方运算,得到结果如下:</p>
+<div class="note default"><p>$2^0=1\bmod5$<br>$2^1=2\bmod5$<br>$2^2=2\times2=4\bmod5$<br>$2^3=2\times2\times2=3\bmod5$<br>$2^4=2\times2\times2\times2=1\bmod5$<br>$2^5=2\times2\times2\times2\times2=2\bmod5$</p></div>
+<p>通过计算发现这样几个规律:</p>
+<div class="note info"><ol>
+<li>$2^4=1$,而再进行一次计算$2^5$又变回了元素自身。</li>
+<li>在对2作乘方运算时，计算结果实际上得到了$\mathbb{F}^{\ast}_5$上的所有元素。</li>
+</ol></div>
+<p>我们把群里某个元素进行群上所定义的的运算若干次后得到单位元的最小的次数叫做<strong>元素的阶</strong>。</p>
+<p>通过运算可以得到群上所有元素的群称为<strong>循环群</strong>，而其中能生成所有元素的元叫做这个循环群的<strong>生成元</strong>。群中元素的个数叫做<strong>群的阶</strong>。</p>
+<p>生成元元素的阶和群的阶是一样的。一个循环群的生成元不止一个，例如：3也是$\mathbb{F}^{\ast}_5$的一个生成元。</p>
+<p>有限域$\mathbb{F}_5$作成的群的一个生成元是2，此时也把这个生成元叫做的这个有限域的一个<strong>本原元</strong><a href="https://en.wikipedia.org/wiki/Primitive_element_(finite_field" target="_blank" rel="noopener">(primitve element)</a>)。</p>
+<p>如果一个群是循环群，那么群上的任意元素可由生成元通过若干次群上的运算得到，比如$\mathbb{F}^*_5$中的元素3,而2是群上的一个生成元满足$2^3\bmod 5=3$，称3对于生成元2的离散对数为3。</p>
+<p>即使$2^7=128\bmod5=3$但是7不是一个解，因为2的阶为4，所以$2^4=1\bmod5$,因此$2^7=2^3\times2^4=3\times1\bmod5$，所以7这里和3其实是等价的只需要模上阶4。</p>
+<p>有限域上的离散对数问题，是指对于有限域上的一个本原元$x$(即有限域中非零元对于乘法作成的群的生成元)，已知另一个有限域上的元素$y$,求解$x^{\alpha}=y \bmod p$中$\alpha$的问题，在有限域上这是困难的。</p>
+<p>DH加密算法使用了这个原理，如果将方程中的$\alpha$作为私钥，发布出公钥$y$的话，通过域的本原元求解$\alpha$是困难的，这就保证了私钥的安全性。同样椭圆曲线密码中也用了类似的设计思路，只不过，它所定义的群，以及运算跟上面的乘法运算有些不同。</p>
+<hr>
+<h2 id="椭圆曲线"><a href="#椭圆曲线" class="headerlink" title="椭圆曲线"></a>椭圆曲线</h2><p><strong>椭圆曲线</strong><a href="http://mathworld.wolfram.com/EllipticCurve.html" target="_blank" rel="noopener">(elliptic curve)</a>是指由下面的这样的一类方程$y^2=x^3+ax+b$所描述的所有点组成的集合, 其中x,y可以取任何值，因此直观上来看它就是一条连续的曲线,下图是以太坊使用的椭圆曲线$y^2=x^3+7$在实数上的连续曲线secp256k1:</p>
+<blockquote>
+<p><img src="http://wx4.sinaimg.cn/mw690/844f0132gy1furlbsoeacj20bp0bp3yt.jpg" alt="@以太坊使用的椭圆曲线y^2=x^3+7在有限域F_59上即x,y={0,1,...,58}上的点的分布 | center | 200x200"></p>
+</blockquote>
+<p>密码算法中椭圆曲线定义在有限域$\mathbb{F}^*_p$上，方程中的$x,y$都取自有限域中的整数，此时曲线就不再是一条连续的了。事实上，它是一些离散点的集合，但所有点$(x,y)$都满足椭圆曲线的方程。</p>
+<p>以太坊使用的椭圆曲线$y^2=x^3+7$在有限域$\mathbb{F}^{\ast}_{59}$上的点的分布：</p>
+<blockquote>
+<p><img src="http://wx4.sinaimg.cn/mw690/844f0132gy1furlbirv08j20bp0bqmxg.jpg" alt="@以太坊使用的椭圆曲线y^2=x^3+7在有限域F_59上即x,y={0,1,...,58}上的点的分布 | center | 200x200"></p>
+</blockquote>
+<p>椭圆曲线上的离散对数问题，也是对于定义在有限域上的椭圆曲线的点的集合来说的，这些点组成的集合也有群一样的性质，所以也可以定义”离散对数“。</p>
+<hr>
+<h3 id="椭圆曲线上的运算"><a href="#椭圆曲线上的运算" class="headerlink" title="椭圆曲线上的运算"></a>椭圆曲线上的运算</h3><p>椭圆曲线上所有的点组成的集合，定义一个运算称为加法，需要保证元素对加法运算是封闭的，并且有生成元，作成一个循环群。</p>
+<p>首先，先定义一个无穷远的点O作为零点，它的作用和乘法群中1是类似的也是单位元。</p>
+<p>假设有三个点$P,Q,R$有下面的定义:</p>
+<div class="note info"><p>单位元: O 即定义的无穷远处的点。<br>逆运算: 若$P(x,y)$则$-P=(x,-y)$即将点作关于x轴的对称即为加法计算的逆运算。立即得到:<br>$P+(-P)=(x,y)+(x,-y)=O$在曲线上这两个点相连垂直于x轴指向无穷远与我们的定义符合。<br>加法: 若曲线上的三个点满足$P+Q+R=O$则$P+Q=-R$ 。</p></div>
+<p>直观上，椭圆曲线上的两个点所确定的直线与椭圆曲线交于第三个点，指向无穷远处，而单位元的定义满足$R-R=O$所以$P+Q=-R$，这样椭圆曲线上所有点做成群。</p>
+<hr>
+<h4 id="加法计算"><a href="#加法计算" class="headerlink" title="加法计算"></a>加法计算</h4><p>在有限域上，椭圆曲线上的点是离散，此时直线可能并不是“直”的，但是只要三个点$P,Q,R$满足某一个直线方程$ax+by+c=0$，就称它们在同一条直线上。</p>
+<p>在计算椭圆曲线上的加法时，就通过求解直线与椭圆曲线的方程组得到结果。</p>
+<p>计算椭圆曲线上点的和公式为:</p>
+<div class="note default"><p>已知点$P(x_p,y_p)$,$Q(x_q,y_q)$，设$R(x_r,y_r)$,椭圆曲线为$y^2 = x^3 +ax+b$由上面的加法定义$P+Q=-R$,和可以由如下计算得到：<br>\begin{array}{rl}<br>    \lambda&amp;=&amp;\frac{y_q-y_p}{x_q-x_p}\<br>  x_r &amp; = &amp; (\lambda^2 - x_p - x_q) \bmod{p} \<br>  y_r &amp; = &amp; [y_p + \lambda(x_r - x_p)] \bmod{p} \<br>  &amp; = &amp; [y_q + \lambda(x_r - x_q)] \bmod{p}<br>\end{array}<br>若$P=Q$则此时相当与计算$2P$那么上面的计算中：$$\lambda=\frac{3x_p^2+a}{2y_p}$$其中$a$是椭圆曲线方程中的参数。</p></div>
+<p>定义了椭圆曲线上点的加法计算，那么椭圆曲线的数乘计算也能很容易得到，如:$$kP=P+\cdots +P$$而$2P$的计算比较特殊，可以先把偶数倍数乘结果计算出来，最后再做与$P$的加法。</p>
+<hr>
+<h3 id="椭圆曲线群的阶"><a href="#椭圆曲线群的阶" class="headerlink" title="椭圆曲线群的阶"></a>椭圆曲线群的阶</h3><p>椭圆曲线在有限域上所有点的个数叫做它的阶。</p>
+<p>以$\mathbb{F}_{23}$上的椭圆曲线$y^2=x^3+7$为例，将有限域上的元素逐一代入曲线计算得到所有椭圆曲线上的点: </p>
+<div class="note default"><p>( 1 ,10) ( 9  ,0 ) ( 16 ,20)<br>( 1 ,13) ( 10 ,8 ) ( 19 ,9 )<br>( 4 ,5 ) ( 10 ,15) ( 19 ,14)<br>( 4 ,18) ( 11 ,2 ) ( 20 ,7 )<br>( 6 ,4 ) ( 11 ,21) ( 20 ,16)<br>( 6 ,19) ( 15 ,1 ) ( 22 ,11)<br>( 8 ,6 ) ( 15 ,22) ( 22 ,12)<br>( 8 ,17) ( 16 ,3 )   O</p></div>
+<p> 椭圆曲线上一共有23个点加上零元O，此时椭圆曲线对于加法作成的群的阶为24。</p>
+<p>以(1,10)为例，它的具体计算过程为:</p>
+<div class="note info"><ol>
+<li>将$x=1$代入方程$y^2=x^3+7$得到$y^2=8\bmod23$</li>
+<li>此时计算都在$\mathbb{F}_{23}$上,所以结果模23。</li>
+<li>在$\mathbb{F}_{23}$上遍历得到结果，解得$y=10,13$。</li>
+</ol></div>
+<p>GO语言代码:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">calPoint</span><span class="params">(field, a, b <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">          <span class="keyword">var</span> k <span class="keyword">int</span></span><br><span class="line">          <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; field; i++ &#123;</span><br><span class="line">                 x_tri := i * i * i</span><br><span class="line">                 y_square := (x_tri + a*i + b) % <span class="number">23</span></span><br><span class="line">                 <span class="keyword">for</span> j := <span class="number">0</span>; j &lt; field; j++ &#123;</span><br><span class="line">                         temp := (j * j) % field</span><br><span class="line">                         <span class="keyword">if</span> temp == y_square &#123;</span><br><span class="line">                                 fmt.Println(<span class="string">"("</span>, i, j, <span class="string">")"</span>)</span><br><span class="line">                                 k++</span><br><span class="line">                         &#125;</span><br><span class="line">                 &#125;</span><br><span class="line">         &#125;</span><br><span class="line">         fmt.Println(<span class="string">"Order is:"</span>, k+<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>当有限域取特别大时，遍历的方法就不能么有效了，通常用<a href="https://en.wikipedia.org/wiki/Schoof%27s_algorithm" target="_blank" rel="noopener">Schoof’s algorithm</a>来计算椭圆曲线的阶。</p>
+<p>任意选取两个点使用公式来计算两点的和:</p>
+<div class="note default"><p>点$P(1,10)$,$Q(4,5)$计算$-R=(x_r,-y_r)$<br>先计算 $$\lambda=\frac{5-10}{4-1}=-5\times(-3)^{-1}=18\times15\bmod23=17$$<br>然后    \begin{array}{rl}x_r&amp;=(17^2-1-4)\bmod23=8\<br>         y_r&amp;=10+17(8-1)=(10-119)\bmod23=6<br>         \end{array}<br>         所以$(1,10)+(4,5)=(8,17)$也在椭圆曲线群上。</p></div>
+<p>上述的加法运算，也验证了椭圆曲线上的所有点对于定义的加法运算是封闭的。</p>
+<hr>
+<h4 id="椭圆曲线群的循环性质"><a href="#椭圆曲线群的循环性质" class="headerlink" title="椭圆曲线群的循环性质"></a>椭圆曲线群的循环性质</h4><p>对于同一个点，连续的做加法运算即数乘运算可以得到同循环群类似的性质。<br>取$P(1,10)$依次计算:</p>
+<div class="note default"><p>$0P=O$<br>$1P=P=(1,10)$<br>$2P=P+P=(22,11)$ $\lambda=\frac{3}{20}=22$<br>$3P=2P+P=(6,4)$       $\lambda=11$<br>$4P=2P+2P=(11,2)$ $\lambda=\frac{3}{22}=20$<br>$5P=4P+P=(19,9)$  $\lambda=13$<br>$6P=3P+3P=(15,1)$ $\lambda=2$<br>$8P=(4,5)$ $\lambda=16$<br>$12P=(9,0)$ $\lambda=4$<br>$\cdots$<br>$24P=12P+12P=O$</p></div>
+<p>对于点$P(0,1)$作数乘运算之后$24P=O$ , 并且它也的数乘结果也得到了椭圆曲线群上的所有点，因此元素$P(0,1)$的阶为24，它的阶与椭圆曲线的阶一样，所以它是这个群的生成元。</p>
+<p>椭圆曲线的所有点作成的也是一个循环群，把它的生成元称作椭圆曲线的<strong>基点</strong>。</p>
+<p>椭圆曲线上的不同点的阶也不同，它们的值为满足$nP=O$的最小正整数。数值上为椭圆曲线阶的因子。例如：上面的曲线的阶为24那么椭圆曲线群上的点的阶为$1,2,3,4,6,8,12,24$，上面的计算中就得到了$24P=O$。</p>
+<hr>
+<h3 id="椭圆曲线的基点"><a href="#椭圆曲线的基点" class="headerlink" title="椭圆曲线的基点"></a>椭圆曲线的基点</h3><p>椭圆曲线算法首先要计算出椭圆曲线的阶$N$，即椭圆曲线在一个大的有限域$\mathbb{F}_p$上的点的个数。</p>
+<p>假设椭圆曲线上某个点阶为$n$,那么满足$N/n=h$，其中$h$是一个整数。则对于基点$P$满足$(n*h)P=O$ 。</p>
+<p>根据$N$的情况有如下两种结果:</p>
+<div class="note info"><p>如果$N$为一个素数，那么它的任意非零点都是它的基点。</p></div>
+<p>因为如果$N$为素数的话那么，椭圆曲线上的点的阶就为$1$或者$N$,只要找到一个阶不为$1$的点就可以作为这个椭圆曲线的基点。</p>
+<div class="note info"><p>如果$N$是一个合数，存在一个点$X$的阶为$n$,满足$nhX=O$,由于在密码学上$N$的选取非常大，可能找不到$h=1$时，正好满足$NX=O$的点来当做我们的基点，因此只要选取$N$的因子中的一个充分大的素数且满足$nhX=O$。</p></div>
+<p>计算$hX$后的点$Y$的阶为$n$,由$Y$作和则能得到$n$个点且满足$nY=O$,$Y$也就是它们的基点，用1中的方法只要$hX\neq O$,那么得到的点阶为$n$。可以用来生成$n$个不同的点。</p>
+<hr>
+<h3 id="椭圆曲线上的离散对数问题"><a href="#椭圆曲线上的离散对数问题" class="headerlink" title="椭圆曲线上的离散对数问题"></a>椭圆曲线上的离散对数问题</h3><p>椭圆曲线上的任意点$Q$，可由基点$P$作若干次椭圆曲线群上加法得到，即有椭圆曲线所在的有限域上的某一个数$k$,满足$kP=Q$ 。</p>
+<p>反之，如果知道椭圆曲线上的某一个点想要求$k$ , 就是椭圆曲线上的离散对数问题。这与之前群中的离散对数问题是很相似的，只不过群上定义的运算规则不同。</p>
+<p>上面的例子中，$\mathbb{F}_{23}$上的椭圆曲线$y^2=x^3+7$的基点为$(1,10)$,任取整数$4$，计算得到$4\times(1,10)=(11,2)$。</p>
+<p>反过来，如果知道$(11,2)$ ，求它是由基点经过多少次计算得到的,就是困难问题，除非穷举。因此在通过这样一种困难问题来设计椭圆曲线密码算法时，就可以公开生成的公钥同时不用担心人们可以通过公钥反推得到私钥，进而保证了密码的安全性。</p>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    DianL
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://ldlovezyh.cn/2018/07/15/椭圆曲线加密原理/" title="椭圆曲线加密原理">http://ldlovezyh.cn/2018/07/15/椭圆曲线加密原理/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/椭圆曲线加密/" rel="tag"><i class="fa fa-tag"></i> 椭圆曲线加密</a>
+          
+            <a href="/tags/以太坊/" rel="tag"><i class="fa fa-tag"></i> 以太坊</a>
+          
+            <a href="/tags/GO/" rel="tag"><i class="fa fa-tag"></i> GO</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/11/随笔/" rel="next" title="随笔">
+                <i class="fa fa-chevron-left"></i> 随笔
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/22/以太坊账户地址与交易签名/" rel="prev" title="以太坊账户地址与交易签名">
+                以太坊账户地址与交易签名 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://wx2.sinaimg.cn/mw690/844f0132gy1fuqqkjjtr8j20g40g4tof.jpg"
+                alt="DianL" />
+            
+              <p class="site-author-name" itemprop="name">DianL</p>
+              <p class="site-description motion-element" itemprop="description">吾乃事奉无上至尊之人。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                 RSS
+	      </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/llllddd" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://weibo.com/u/2219770162" target="_blank" title="微博">
+                    
+                      <i class="fa fa-fw fa-weibo"></i>微博</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+              </a>
+            </div>
+          
+
+          
+          
+
+          
+<!--
+</br>
+<div id="music163player">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=320 height=86 src="//music.163.com/outchain/player?type=2&id=22755679&auto=1&height=66"></iframe>
+</div>
+-->
+
+<div id="music163player">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=536098015&auto=1&height=66"></iframe>
+</div>
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#有限域和离散对数"><span class="nav-number">1.</span> <span class="nav-text">有限域和离散对数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#除法运算"><span class="nav-number">1.1.</span> <span class="nav-text">除法运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#群和离散对数问题"><span class="nav-number">1.2.</span> <span class="nav-text">群和离散对数问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#椭圆曲线"><span class="nav-number">2.</span> <span class="nav-text">椭圆曲线</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#椭圆曲线上的运算"><span class="nav-number">2.1.</span> <span class="nav-text">椭圆曲线上的运算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#加法计算"><span class="nav-number">2.1.1.</span> <span class="nav-text">加法计算</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#椭圆曲线群的阶"><span class="nav-number">2.2.</span> <span class="nav-text">椭圆曲线群的阶</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#椭圆曲线群的循环性质"><span class="nav-number">2.2.1.</span> <span class="nav-text">椭圆曲线群的循环性质</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#椭圆曲线的基点"><span class="nav-number">2.3.</span> <span class="nav-text">椭圆曲线的基点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#椭圆曲线上的离散对数问题"><span class="nav-number">2.4.</span> <span class="nav-text">椭圆曲线上的离散对数问题</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DianL</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.3"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.3"></script>
+
+
+  
+
+
+</body>
+</html>

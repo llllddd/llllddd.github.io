@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.cat.net/css?family=Roboto Slab:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="以太坊,GO,密码学," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="LoveLotus" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="以太坊的共识算法采用Ethash方案。 通过待挖掘区块的高度，计算出难度值，将难度值告知矿工，矿工通过共识算法中计算，来完成对应难度的挖掘，达到工作量的证明。 为了使得工作量证明是有效的，那么共识算法的设计上必然是易于验证，难于改变的。 所有矿工节点，都尝试通过Ethash算法解决给定难度的问题，并且随着区块高度的增加，参数也会随之增大从而带来挖矿难度的增加。  挖矿难度以太坊到目前为止经历三次难">
+<meta name="keywords" content="以太坊,GO,密码学">
+<meta property="og:type" content="article">
+<meta property="og:title" content="以太坊Pow共识算法">
+<meta property="og:url" content="http://ldlovezyh.cn/2018/08/01/以太坊POW算法Ethash/index.html">
+<meta property="og:site_name" content="LoveLotus">
+<meta property="og:description" content="以太坊的共识算法采用Ethash方案。 通过待挖掘区块的高度，计算出难度值，将难度值告知矿工，矿工通过共识算法中计算，来完成对应难度的挖掘，达到工作量的证明。 为了使得工作量证明是有效的，那么共识算法的设计上必然是易于验证，难于改变的。 所有矿工节点，都尝试通过Ethash算法解决给定难度的问题，并且随着区块高度的增加，参数也会随之增大从而带来挖矿难度的增加。  挖矿难度以太坊到目前为止经历三次难">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-30T06:19:21.620Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="以太坊Pow共识算法">
+<meta name="twitter:description" content="以太坊的共识算法采用Ethash方案。 通过待挖掘区块的高度，计算出难度值，将难度值告知矿工，矿工通过共识算法中计算，来完成对应难度的挖掘，达到工作量的证明。 为了使得工作量证明是有效的，那么共识算法的设计上必然是易于验证，难于改变的。 所有矿工节点，都尝试通过Ethash算法解决给定难度的问题，并且随着区块高度的增加，参数也会随之增大从而带来挖矿难度的增加。  挖矿难度以太坊到目前为止经历三次难">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: 'undefined',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+<script>
+    (function(){
+        if('123'){
+            if (prompt('Password:') !== '123'){
+                alert('ERROR');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+
+  <link rel="canonical" href="http://ldlovezyh.cn/2018/08/01/以太坊POW算法Ethash/"/>
+
+
+
+
+
+  <title>以太坊Pow共识算法 | LoveLotus</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b0339818ee7d3ca09ef6f121603241e1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">LoveLotus</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-essay">
+          <a href="/categories/专栏" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-star"></i> <br />
+            
+            星
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ldlovezyh.cn/2018/08/01/以太坊POW算法Ethash/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="DianL">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://wx2.sinaimg.cn/mw690/844f0132gy1fuqqkjjtr8j20g40g4tof.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LoveLotus">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">以太坊Pow共识算法</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-01T00:00:00+08:00">
+                2018-08-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/以太坊，密码学/" itemprop="url" rel="index">
+                    <span itemprop="name">以太坊，密码学</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>以太坊的共识算法采用Ethash方案。</p>
+<p>通过待挖掘区块的高度，计算出难度值，将难度值告知矿工，矿工通过共识算法中计算，来完成对应难度的挖掘，达到工作量的证明。</p>
+<p>为了使得工作量证明是有效的，那么共识算法的设计上必然是易于验证，难于改变的。</p>
+<p>所有矿工节点，都尝试通过Ethash算法解决给定难度的问题，并且随着区块高度的增加，参数也会随之增大从而带来挖矿难度的增加。</p>
+<hr>
+<h2 id="挖矿难度"><a href="#挖矿难度" class="headerlink" title="挖矿难度"></a>挖矿难度</h2><p>以太坊到目前为止经历三次难度计算方法的调整，分别对应以太坊的三个版本Frontier，Homestead和Byzantium。</p>
+<p>目前，以太坊处于Byzantium版本。挖矿难度计算主要依赖于以下几点：</p>
+<div class="note info"><ol>
+<li>父块难度，时间戳以及子块时间戳。</li>
+<li>子块难度 = 父块难度 + 调整因子 + 主因子 </li>
+</ol></div>
+<p>$调整因子 = \frac{父块难度}{2048} * MAX ( 1 - \frac{子块时间戳 - 父块时间戳}{10}, -99)$</p>
+<p>$主因子 = 2^{\frac{区块高度} {100000} - 2}$</p>
+<p>这样一个新的区块的难度，就可以跟据父块的难度计算的到。同时主因子成指数级上升，因此随着区块高度的不断增加，挖矿的难度也会不断上升。</p>
+<h2 id="Dataset的生成"><a href="#Dataset的生成" class="headerlink" title="Dataset的生成"></a>Dataset的生成</h2><p>以太坊中的hashmoto算法，需要首先产生一个dataset，而dataset的生成由依赖于一个cache。</p>
+<p>cache 为一连串64字节哈希值组成的数组，它的尺寸随着区块高度的增加而增大，意味着计算所需要的内存增加。dataset同样尺寸也会随着区块高度的增加而增大。</p>
+<p>尺寸不断改变的设计，使得区块的挖掘越来越困难。</p>
+<h3 id="计算Dataset和Cache的尺寸"><a href="#计算Dataset和Cache的尺寸" class="headerlink" title="计算Dataset和Cache的尺寸"></a>计算Dataset和Cache的尺寸</h3><p>Ethash中cache和dataset的大小依赖于区块的epoch，每30000个区块作为一个epoch。</p>
+<p>dataset的尺寸，每隔一个epoch增长8MB，而cache的尺寸，每隔一个epoch增长128KB。同时cache和dataset中都存的为64字节哈希值。</p>
+<p>为了避免规律而导致循环的行为，元素的个数要保证为素数。代码中将前2048个epoch的相关尺寸已经作成了表，当超过后则需要计算。目前以太坊区块的高度处于第203epoch。</p>
+<p>以太坊中计算的相关代码为:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">calcCacheSize</span><span class="params">(epoch <span class="keyword">int</span>)</span> <span class="title">uint64</span></span> &#123;</span><br><span class="line">        size := cacheInitBytes + cacheGrowthBytes*<span class="keyword">uint64</span>(epoch) - hashBytes</span><br><span class="line">        <span class="keyword">for</span> !<span class="built_in">new</span>(big.Int).SetUint64(size / hashBytes).ProbablyPrime(<span class="number">1</span>) &#123;                                                         </span><br><span class="line">                size -= <span class="number">2</span> * hashBytes</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> size</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">calcDatasetSize</span><span class="params">(epoch <span class="keyword">int</span>)</span> <span class="title">uint64</span></span> &#123;</span><br><span class="line">        size := datasetInitBytes + datasetGrowthBytes*<span class="keyword">uint64</span>(epoch) - mixBytes</span><br><span class="line">        <span class="keyword">for</span> !<span class="built_in">new</span>(big.Int).SetUint64(size / mixBytes).ProbablyPrime(<span class="number">1</span>) &#123;                                                         </span><br><span class="line">                size -= <span class="number">2</span> * mixBytes</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> size</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="生成cache"><a href="#生成cache" class="headerlink" title="生成cache"></a>生成cache</h3><p>dataset在结构上一个有向无环图，即每一个字节点可以有多个父节点，并且是单向的。</p>
+<p>为了生成dataset，需要首先生成cache，cache的计算依赖于它的尺寸和种子。</p>
+<h4 id="种子的生成"><a href="#种子的生成" class="headerlink" title="种子的生成"></a>种子的生成</h4><p>生成cache的种子是一段32字节哈希值，它由Kccak256算法计算得到。</p>
+<p>种子的计算，也是根据区块所属的epoch，每个epoch的种子不同的。</p>
+<p>第一个epoch的种子值为32字节的0，而后每一个epoch的种子都是前一个epoch种子的Keccak-256哈希值。</p>
+<h4 id="RandMemoHash"><a href="#RandMemoHash" class="headerlink" title="RandMemoHash"></a>RandMemoHash</h4><p>cache的生成过程主要有两部分:<br><div class="note info"><p>计算初始数据集</p>
+<ol>
+<li>由对应epoch的种子，通过Keccak512算法生成64字节的哈希值。</li>
+<li>依次通过前一次计算的哈希值再进行哈希，最终得到cache尺寸的数据。</li>
+</ol></div></p>
+<div class="note info"><p>通过RanMenoHash算法得到最终的cache</p>
+<ol>
+<li>记初始的数据集为M, 64字节哈希值得个数为N。</li>
+<li>递推计算cache中的每个元素，共经过三轮计算。<br>$M[0] = Keccak512(M[N-1]\bigoplus M[(M[0]\bmod N)])$<br>$M[1] = Keccak512(M[0]\bigoplus M[(M[1]\bmod N)])$<br>$\cdots$<br>$M[N-1] = Keccak512(M[N-2]\bigoplus M[(M[N-1]\bmod N)])$</li>
+</ol></div>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">generateCache</span><span class="params">(dest []<span class="keyword">uint32</span>, epoch <span class="keyword">uint64</span>, seed []<span class="keyword">byte</span>)</span></span> &#123;</span><br><span class="line">         <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; cacheRounds; i++ &#123;</span><br><span class="line">                 <span class="keyword">for</span> j := <span class="number">0</span>; j &lt; rows; j++ &#123;</span><br><span class="line">                         <span class="keyword">var</span> (</span><br><span class="line">                                 srcOff = ((j - <span class="number">1</span> + rows) % rows) * hashBy\</span><br><span class="line">     tes</span><br><span class="line">                                 dstOff = j * hashBytes</span><br><span class="line">                                 xorOff = (binary.LittleEndian.Uint32(cach\</span><br><span class="line">     e[dstOff:]) % <span class="keyword">uint32</span>(rows)) * hashBytes</span><br><span class="line">                         )</span><br><span class="line">                         bitutil.XORBytes(temp, cache[srcOff:srcOff+hashBy\</span><br><span class="line">     tes], cache[xorOff:xorOff+hashBytes])</span><br><span class="line">						keccak512(cache[dstOff:], temp)</span><br><span class="line"></span><br><span class="line">                         atomic.AddUint32(&amp;progress, <span class="number">1</span>)</span><br><span class="line">                 &#125;</span><br><span class="line">         &#125;</span><br></pre></td></tr></table></figure>
+<p>这样，通过迭代计算最终得到了生成dataset所需要的cache。</p>
+<h3 id="计算Dataset中的元素"><a href="#计算Dataset中的元素" class="headerlink" title="计算Dataset中的元素"></a>计算Dataset中的元素</h3><p>dataset中的元素同样为哈希值，每一元素都由256个cache中的元素得到。</p>
+<p>记dataset为D,元素个数为N, cache 为 C。dataset中第i个哈希值的计算过程为：</p>
+<div class="note info"><ol>
+<li>计算初始值 $Mix = Keccak512(C[i \bmod N] \bigoplus i)$ </li>
+<li>经过256轮的迭代计算，每次都会加入一个cache中的元素：<br>$P_0 = FNV(i\bigoplus0 , Mix[0 \bmod 16 : 0\bmod 16 +4 ])$<pre><code>$Mix_0 = FNV(Mix,C[P_0])$
+$P[1] = FNV(i \bigoplus1 , Mix_0[1 \bmod 16 : 1\bmod 16 +4 ]) $
+$Mix_1 = FNV(Mix_0,C[P_1])$
+$\cdots$
+$P_{255} = FNV(i\bigoplus255 , Mix_{255}[255\bmod 16: 255\bmod 16 + 4])$
+$Mix_{255} = FNV(Mix_{254},C[P_{255}])$
+</code></pre></li>
+<li>返回64字节哈希: $Keccak512(Mix_{255})$</li>
+</ol></div>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">generateDatasetItem</span><span class="params">(cache []<span class="keyword">uint32</span>, index <span class="keyword">uint32</span>, keccak512 hasher)</span> []<span class="title">byte</span></span> &#123;</span><br><span class="line">...</span><br><span class="line">         <span class="comment">// Convert the mix to uint32s to avoid constant bit shifting      </span></span><br><span class="line">         intMix := <span class="built_in">make</span>([]<span class="keyword">uint32</span>, hashWords)</span><br><span class="line">         <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="built_in">len</span>(intMix); i++ &#123;</span><br><span class="line">                 intMix[i] = binary.LittleEndian.Uint32(mix[i*<span class="number">4</span>:])</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="comment">// fnv it with a lot of random cache nodes based on index         </span></span><br><span class="line">         <span class="keyword">for</span> i := <span class="keyword">uint32</span>(<span class="number">0</span>); i &lt; datasetParents; i++ &#123;</span><br><span class="line">                 parent := fnv(index^i, intMix[i%<span class="number">16</span>]) % rows</span><br><span class="line">                 fnvHash(intMix, cache[parent*hashWords:])</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="comment">// Flatten the uint32 mix into a binary one and return            </span></span><br><span class="line">         <span class="keyword">for</span> i, val := <span class="keyword">range</span> intMix &#123;</span><br><span class="line">                 binary.LittleEndian.PutUint32(mix[i*<span class="number">4</span>:], val)</span><br><span class="line">         &#125;</span><br><span class="line">         keccak512(mix, mix)</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>生成的dataset，为之后hashmoto函数调用。</p>
+<h2 id="Hashmoto算法"><a href="#Hashmoto算法" class="headerlink" title="Hashmoto算法"></a>Hashmoto算法</h2><p>Hashmoto函数为矿工在根据区块的难度，进行工作量证明时进行哈希计算的主函数。最终得到64字节的数组，包含32字节的摘要与32字节的哈希值。</p>
+<p>Hashmoto算法的输入有:</p>
+<ul>
+<li>候选区块头的哈希。</li>
+<li>随机选取的nonce。</li>
+<li>dataset的大小。</li>
+<li>从dataset中得到元素的回调函数。</li>
+</ul>
+<p>Hashmoto函数的整体思路为: 从dataset中选取元素，混合得到128字节数组，通过FNV算法再将数组压缩，最终得到输出的32字节digest。</p>
+<h3 id="计算种子"><a href="#计算种子" class="headerlink" title="计算种子"></a>计算种子</h3><div class="note info"><ol>
+<li>32字节的区块头哈希值与8字节nonce，通过Keccak512得到64字节种子。</li>
+<li>初始化Mix(seed,seed)。</li>
+</ol></div>
+<p>由种子经过接下来两个过程得到最终的结果。</p>
+<h3 id="Accesses"><a href="#Accesses" class="headerlink" title="Accesses"></a>Accesses</h3><p> 经过64轮的迭代运算，每次计算都会加入一个dataset中的元素。</p>
+<p>计算过程: </p>
+<blockquote>
+<p> 记dataset为D，128字节元素个数为N,种子s，迭代次数i.<br>   $P_0 = FNV( 0 \bigoplus s , Mix[0 \bmod 32])\bmod N$<br>   $T_0 = (D[2<em>P_0],D[2</em>P_0+1])$<br>   $Mix_0 = FNV(Mix, T_0)$<br>$\cdots$<br>$P_{63} = FNV( 63 \bigoplus s , Mix[63 \bmod 32])\bmod N$<br>   $T_{63} = (D[2<em>P_{63}],D[2</em>P_{63}+1])$<br>   $Mix_{63} = FNV(Mix, T_{63})$</p>
+</blockquote>
+<h3 id="Compress"><a href="#Compress" class="headerlink" title="Compress"></a>Compress</h3><p>通过FNV哈希算法将得到的128字节Mix，压缩为32字节，即每4字节通过Mix中的16字节压缩得到。</p>
+<blockquote>
+<p>Mix数组中每个元素为4字节<br>$Mix[0] =  FNV(FNV(FNV(Mix[0], Mix[1]), Mix[2]), Mix[3])$<br>$Mix[1] =  FNV(FNV(FNV(Mix[4], Mix[5]), Mix[6]), Mix[6])$<br>$\cdots$<br>$Mix[7] =  FNV(FNV(FNV(Mix[32], Mix[33]), Mix[34]), Mix[35])$</p>
+</blockquote>
+<p>最终得到32字节摘要digest。然后通过Keccak256算法计算种子s与digest的哈希值32字节。最终返回digest，与hash共64字节。</p>
+<h3 id="FNV哈希"><a href="#FNV哈希" class="headerlink" title="FNV哈希"></a>FNV哈希</h3><p>以太坊中使用FNV哈希算法，这种算法能块速哈希大量数据并保持较小的冲突率，适用于哈希一些相近的字符串。以太坊中将其作为异或算法的替换。 </p>
+<p>算法中将32比特的数字乘以一个素数再与另一个32比特数字异或。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">fnv</span><span class="params">(a, b <span class="keyword">uint32</span>)</span> <span class="title">uint32</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> a*<span class="number">0x01000193</span> ^ b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Mine"><a href="#Mine" class="headerlink" title="Mine"></a>Mine</h2><p>挖矿过程实际上是进行工作量证明的矿工通过hashmoto算法寻找满足区块难度的nonce的过程。</p>
+<p>由新区块的难度值可以计算得到，符合目标值哈希的范围：$\frac{2^{256-1}}{Difficulty}$</p>
+<p>若通过hashmoto算法计算得到的哈希值小于目标值，那么将nonce和摘要digest的哈希值Mixdigest组装到区块头中。这样就得到了完整的区块。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    DianL
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://ldlovezyh.cn/2018/08/01/以太坊POW算法Ethash/" title="以太坊Pow共识算法">http://ldlovezyh.cn/2018/08/01/以太坊POW算法Ethash/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/以太坊/" rel="tag"><i class="fa fa-tag"></i> 以太坊</a>
+          
+            <a href="/tags/GO/" rel="tag"><i class="fa fa-tag"></i> GO</a>
+          
+            <a href="/tags/密码学/" rel="tag"><i class="fa fa-tag"></i> 密码学</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/25/以太坊钱包/" rel="next" title="以太坊钱包原理">
+                <i class="fa fa-chevron-left"></i> 以太坊钱包原理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/08/RLP编码与区块解析/" rel="prev" title="RLP编码与区块解析">
+                RLP编码与区块解析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://wx2.sinaimg.cn/mw690/844f0132gy1fuqqkjjtr8j20g40g4tof.jpg"
+                alt="DianL" />
+            
+              <p class="site-author-name" itemprop="name">DianL</p>
+              <p class="site-description motion-element" itemprop="description">吾乃事奉无上至尊之人。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                 RSS
+	      </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/llllddd" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://weibo.com/u/2219770162" target="_blank" title="微博">
+                    
+                      <i class="fa fa-fw fa-weibo"></i>微博</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+              </a>
+            </div>
+          
+
+          
+          
+
+          
+<!--
+</br>
+<div id="music163player">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=320 height=86 src="//music.163.com/outchain/player?type=2&id=22755679&auto=1&height=66"></iframe>
+</div>
+-->
+
+<div id="music163player">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=536098015&auto=1&height=66"></iframe>
+</div>
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#挖矿难度"><span class="nav-number">1.</span> <span class="nav-text">挖矿难度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dataset的生成"><span class="nav-number">2.</span> <span class="nav-text">Dataset的生成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#计算Dataset和Cache的尺寸"><span class="nav-number">2.1.</span> <span class="nav-text">计算Dataset和Cache的尺寸</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成cache"><span class="nav-number">2.2.</span> <span class="nav-text">生成cache</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#种子的生成"><span class="nav-number">2.2.1.</span> <span class="nav-text">种子的生成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RandMemoHash"><span class="nav-number">2.2.2.</span> <span class="nav-text">RandMemoHash</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算Dataset中的元素"><span class="nav-number">2.3.</span> <span class="nav-text">计算Dataset中的元素</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hashmoto算法"><span class="nav-number">3.</span> <span class="nav-text">Hashmoto算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#计算种子"><span class="nav-number">3.1.</span> <span class="nav-text">计算种子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Accesses"><span class="nav-number">3.2.</span> <span class="nav-text">Accesses</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Compress"><span class="nav-number">3.3.</span> <span class="nav-text">Compress</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FNV哈希"><span class="nav-number">3.4.</span> <span class="nav-text">FNV哈希</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mine"><span class="nav-number">4.</span> <span class="nav-text">Mine</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DianL</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.3"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.3"></script>
+
+
+  
+
+
+</body>
+</html>

@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.cat.net/css?family=Roboto Slab:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="以太坊,GO," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="LoveLotus" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="钱包的类型用户通过钱包来管理账户，账户中包含了账户地址和账户的私钥信息。地址可以接收交易，而私钥在账户发起交易时对交易进行签名。 用户通过钱包管理账户私钥实现了对加密货币的管理。 目前钱包主要有两种类型:非确定性钱包(Nodeterministic(Random) Wallet)确定性钱包(Deterministic(Seeded) Wallet) 非确定性钱包中，每一个账户包含一个由随机数生成的">
+<meta name="keywords" content="以太坊,GO">
+<meta property="og:type" content="article">
+<meta property="og:title" content="以太坊钱包原理">
+<meta property="og:url" content="http://ldlovezyh.cn/2018/07/25/以太坊钱包/index.html">
+<meta property="og:site_name" content="LoveLotus">
+<meta property="og:description" content="钱包的类型用户通过钱包来管理账户，账户中包含了账户地址和账户的私钥信息。地址可以接收交易，而私钥在账户发起交易时对交易进行签名。 用户通过钱包管理账户私钥实现了对加密货币的管理。 目前钱包主要有两种类型:非确定性钱包(Nodeterministic(Random) Wallet)确定性钱包(Deterministic(Seeded) Wallet) 非确定性钱包中，每一个账户包含一个由随机数生成的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/844f0132gy1furoikzhb2j20ga0awmxi.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/844f0132gy1furoildhzij20fw09zjs4.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/844f0132gy1furoubmstgj20vl0i7q4h.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/844f0132gy1furouc4k1uj20vj0jnjtc.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/844f0132gy1furoilphkjj20ij0ivjsd.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/844f0132gy1furoim1bdtj20i80frmxk.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/844f0132gy1furoimku2hj20o90gbjs3.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/844f0132gy1furoin0bnkj20sw0hxjsu.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/844f0132gy1furoind87vj20tf0i975t.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/844f0132gy1furoinuuzqj20pt0ha75z.jpg">
+<meta property="og:updated_time" content="2018-08-30T06:05:15.334Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="以太坊钱包原理">
+<meta name="twitter:description" content="钱包的类型用户通过钱包来管理账户，账户中包含了账户地址和账户的私钥信息。地址可以接收交易，而私钥在账户发起交易时对交易进行签名。 用户通过钱包管理账户私钥实现了对加密货币的管理。 目前钱包主要有两种类型:非确定性钱包(Nodeterministic(Random) Wallet)确定性钱包(Deterministic(Seeded) Wallet) 非确定性钱包中，每一个账户包含一个由随机数生成的">
+<meta name="twitter:image" content="http://wx2.sinaimg.cn/mw690/844f0132gy1furoikzhb2j20ga0awmxi.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: 'undefined',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+<script>
+    (function(){
+        if('123'){
+            if (prompt('Password:') !== '123'){
+                alert('ERROR');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+
+  <link rel="canonical" href="http://ldlovezyh.cn/2018/07/25/以太坊钱包/"/>
+
+
+
+
+
+  <title>以太坊钱包原理 | LoveLotus</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b0339818ee7d3ca09ef6f121603241e1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">LoveLotus</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-essay">
+          <a href="/categories/专栏" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-star"></i> <br />
+            
+            星
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ldlovezyh.cn/2018/07/25/以太坊钱包/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="DianL">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://wx2.sinaimg.cn/mw690/844f0132gy1fuqqkjjtr8j20g40g4tof.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LoveLotus">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">以太坊钱包原理</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-25T00:00:00+08:00">
+                2018-07-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/以太坊/" itemprop="url" rel="index">
+                    <span itemprop="name">以太坊</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="钱包的类型"><a href="#钱包的类型" class="headerlink" title="钱包的类型"></a>钱包的类型</h2><p>用户通过钱包来管理账户，账户中包含了账户地址和账户的私钥信息。地址可以接收交易，而私钥在账户发起交易时对交易进行签名。</p>
+<p>用户通过钱包管理账户私钥实现了对加密货币的管理。</p>
+<p>目前钱包主要有两种类型:<br><div class="note info"><p>非确定性钱包(Nodeterministic(Random) Wallet)<br>确定性钱包(Deterministic(Seeded) Wallet)</p></div></p>
+<p>非确定性钱包中，每一个账户包含一个由随机数生成的私钥和通过私钥得到的账户地址。非确定性钱包中每一个账户都有唯一对应的地址和私钥。</p>
+<p><img src="http://wx2.sinaimg.cn/mw690/844f0132gy1furoikzhb2j20ga0awmxi.jpg" alt="Alt text"></p>
+<p>确定性钱包中，账户的私钥可以派生出若干子密钥对。子密钥对中的公钥可以作为该账户地址，而对应的私钥可对交易签名。确定性钱包中每一个账户，可以有多个账户地址，及对应的私钥。并且这些地址和私钥都可以通过账户的主密钥导出。</p>
+<p>由于确定性钱包中一个账户可以得到多个有效账户地址。对相应地址的交易进行签名时只需由主密钥导出对应私钥即可。省去了非确定性钱包中对每一个账户都要维护一对密钥的麻烦。目前更为常用的是确定性钱包。</p>
+<p><img src="http://wx2.sinaimg.cn/mw690/844f0132gy1furoildhzij20fw09zjs4.jpg" alt="Alt text"></p>
+<hr>
+<h2 id="非确定性钱包"><a href="#非确定性钱包" class="headerlink" title="非确定性钱包"></a>非确定性钱包</h2><p>非确定性钱包也叫随机钱包，钱包中的每一个账户都会有一个与之对应的用户私钥。</p>
+<p>为保证私钥的安全性，本地私钥文件都是通过加密算法(如AES算法)，加密之后存储的。</p>
+<p>这种钱包的缺点在于，若用户有多个账户，则在钱包备份与转移时，需要处理大量的私钥文件，增加了用户的负担以及私钥丢失的可能。</p>
+<p>钱包中账户的地址及私钥由椭圆曲线加密算法得到，生成私钥的种子是由伪随机数生成器直接得到的，随机数一般是根据系统噪音产生。</p>
+<hr>
+<h3 id="私钥的存储"><a href="#私钥的存储" class="headerlink" title="私钥的存储"></a>私钥的存储</h3><p>以太坊在对私钥存储时使用了Web3 Secret Storage 技术。</p>
+<p>用户设置密码，使用AES加密算法，将账户的私钥加密之后存储在本地的文件中。</p>
+<p>具体过程为:</p>
+<blockquote>
+<ol>
+<li>输入用户设置的密码，初始化Scrypt算法的参数。</li>
+<li>加盐后,由Scrypt算法得到32字节长的数组，分为两组，前后各为16字节。</li>
+<li>将前16字节数组，作为AES128算法的加密密钥。</li>
+<li>设置AES算法的初始化数组，并使用密钥将用户的私钥加密得到密文。</li>
+<li>将密文与后16字节数组通过Keccak256算法得到哈希值作为mac。</li>
+<li>把Scrypt参数，盐，密文，AES的初始化数组和mac保存为加密文件。</li>
+</ol>
+</blockquote>
+<p>流程图如下:<br><img src="http://wx3.sinaimg.cn/mw690/844f0132gy1furoubmstgj20vl0i7q4h.jpg" alt="Alt text"></p>
+<p>最终得到通过JSON编码的密文文件。包含了加密过程中所使用的参数和用户私钥的密文。用户设置的密码不保存。</p>
+<p>JSON格式的文件 :</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"> &#123;<span class="attr">"address"</span>:<span class="string">"41741263be649ba40782037c8059c3efa6c658e0"</span>,</span><br><span class="line">  <span class="attr">"crypto"</span>:&#123;</span><br><span class="line">	  <span class="attr">"cipher"</span>:<span class="string">"aes-128-ctr"</span>,</span><br><span class="line">	  <span class="attr">"ciphertext"</span>:<span class="string">"44951b556a04873f2e4d8e72e9260adbe32934dd7a58883115b3fd733c0b7fba"</span>,</span><br><span class="line">	  <span class="attr">"cipherparams"</span>:&#123;</span><br><span class="line">		  <span class="attr">"iv"</span>:<span class="string">"36608c5ff76486a90f60ea96b81ecf67"</span></span><br><span class="line">		  &#125;,</span><br><span class="line">      <span class="attr">"kdf"</span>:<span class="string">"scrypt"</span>,</span><br><span class="line">	  <span class="attr">"kdfparams"</span>:&#123;</span><br><span class="line">		 <span class="attr">"dklen"</span>:<span class="number">32</span>,</span><br><span class="line">		 <span class="attr">"n"</span>:<span class="number">4096</span>,</span><br><span class="line">		 <span class="attr">"p"</span>:<span class="number">6</span>,</span><br><span class="line">		 <span class="attr">"r"</span>:<span class="number">8</span>,</span><br><span class="line">	     <span class="attr">"salt"</span>:<span class="string">"a407ef6f4ba8a2a1c4c9ec80b49efa51d1887a2606853b84dbb72941d050609f"</span></span><br><span class="line">		&#125;,</span><br><span class="line">	   <span class="attr">"mac"</span>:<span class="string">"1f0a6a3acc2b7dc6621ade4f85cd4dc2690f3c269ac043ce13663279b85ada4f"</span></span><br><span class="line">	&#125;,</span><br><span class="line">  <span class="attr">"id"</span>:<span class="string">"49220171-140c-45ea-82e2-96567e50fa5b"</span>,</span><br><span class="line">  <span class="attr">"version"</span>:<span class="number">3</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="私钥文件的读取"><a href="#私钥文件的读取" class="headerlink" title="私钥文件的读取"></a>私钥文件的读取</h3><p>当用户对交易进行签名时，需要使用账户的私钥。此时钱包通过用户输入的密码，由AES算法将本地密钥文件中的密文解密得到账户的私钥。</p>
+<p>整个过程类似对私钥加密存储时的逆过程。由于AES是对称加密算法，所以加密时的密钥同样可以用来解密。</p>
+<p>从本地私钥文件读取用户私钥的过程为:</p>
+<blockquote>
+<ol>
+<li>用户输入密码，解析密文文件得到Scrypt算法参数。</li>
+<li>由Scrypt得到32字节数组，分为两组，前后各为16字节。</li>
+<li>解析密钥文件得到密文，将后16字节与密文通过Keccak256算法得到哈希值。</li>
+<li>将得到的哈希值与密钥文件中的mac进行比较若不同则告知用户密码错误。</li>
+<li>验证密码的正确性之后，将前16字节数组作为AES算法的密钥。</li>
+<li>对密文进行解密，得到明文即用户的私钥。</li>
+</ol>
+</blockquote>
+<p>流程图如下:<br><img src="http://wx2.sinaimg.cn/mw690/844f0132gy1furouc4k1uj20vj0jnjtc.jpg" alt="Alt text"></p>
+<hr>
+<h2 id="确定性钱包"><a href="#确定性钱包" class="headerlink" title="确定性钱包"></a>确定性钱包</h2><p>确定性钱包也叫种子钱包，它通过种子管理私钥，当需要新的账户时，种子通过扩展秘钥算法，生成子秘钥，从而得到对应的账户。</p>
+<p>生成账户的密钥都可以由种子导出，因此备份钱包时，只需要将种子备份，就可以恢复所有的密钥，从而得到钱包中所有账户。</p>
+<p>确定性钱包的优点在于，方便用户对钱包的备份及转移，同时在理论上为用户提供了足够多的账户。然而由于密钥通过种子得到，因此种子的泄露就会导致所有账户的信息泄露。</p>
+<h3 id="助记码"><a href="#助记码" class="headerlink" title="助记码"></a>助记码</h3><p>在确定性钱包的使用过程中，首先要生成一组随机数，助记码的作用是将随机数转换为一组人类可读的字符。</p>
+<p>BIP-39协议中规定了助记码的产生过程。助记码使得转移以及备份钱包的随机数易于记录和描述。</p>
+<p>助记码的生成流程:</p>
+<blockquote>
+<ol>
+<li>输入有效的随机数数组，数组长度在128比特与256比特之间且能被32整除。</li>
+<li>使用SHA256算法计算随机数的哈希值。</li>
+<li>计算校验码长度N，为随机数数组长度除以32比特。</li>
+<li>将哈希值的前N比特作为校验码加到随机数之后得到新的数组。</li>
+<li>将数组分组，每组11比特，对应字符表得到助记码。</li>
+</ol>
+</blockquote>
+<p><img src="http://wx4.sinaimg.cn/mw690/844f0132gy1furoilphkjj20ij0ivjsd.jpg" alt="Alt text"></p>
+<p>助记码与随机数的生成没有直接关系，而且对应的字符表也是任意的。助记码能更好的记录和描述生成的随机数。</p>
+<p>注意到，校验码也转换成了助记码中的一部分，这样助记码的完整性也可以得到验证。</p>
+<hr>
+<h3 id="由种子得到密钥"><a href="#由种子得到密钥" class="headerlink" title="由种子得到密钥"></a>由种子得到密钥</h3><p>助记码表示了一组随机数，通过PBKDF2算法得到种子，进而种子通过哈希算法的到钱包的主密钥。</p>
+<p>BIP-39协议中也规定了由助记码(随机数)生成种子的过程。</p>
+<p>由种子得到密钥的过程为:</p>
+<blockquote>
+<ol>
+<li>将助记码由对应的字符表转换为数组。</li>
+<li>字符”mnemonic+用户输入的密码“作为PBKFD2算法的盐。</li>
+<li>将盐和数组通过SHA512算法经过2048轮运算得到512比特种子。</li>
+</ol>
+</blockquote>
+<p><img src="http://wx1.sinaimg.cn/mw690/844f0132gy1furoim1bdtj20i80frmxk.jpg" alt="Alt text"></p>
+<blockquote>
+<ol start="4">
+<li>种子通过SHA512哈希算法得到512比特哈希值。</li>
+<li>将哈希值分组，每组256比特。</li>
+<li>前256比特作为用户的主私钥，再通过椭圆曲线算法得到对应的主公钥。</li>
+<li>后256比特作为链码用来生成子密钥。</li>
+</ol>
+</blockquote>
+<p><img src="http://wx2.sinaimg.cn/mw690/844f0132gy1furoimku2hj20o90gbjs3.jpg" alt="Alt text"></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewMaster</span><span class="params">(seed []<span class="keyword">byte</span>, net *chaincfg.Params)</span> <span class="params">(*ExtendedKey, error)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 验证种子有效性.</span></span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">len</span>(seed) &lt; MinSeedBytes || <span class="built_in">len</span>(seed) &gt; MaxSeedBytes &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, ErrInvalidSeedLen</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//使用hamc-sha512算法计算秘钥</span></span><br><span class="line">	hmac512 := hmac.New(sha512.New, masterKey)</span><br><span class="line">	hmac512.Write(seed)</span><br><span class="line">	lr := hmac512.Sum(<span class="literal">nil</span>)</span><br><span class="line">	</span><br><span class="line">	secretKey := lr[:<span class="built_in">len</span>(lr)/<span class="number">2</span>]</span><br><span class="line">	chainCode := lr[<span class="built_in">len</span>(lr)/<span class="number">2</span>:]</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 验证产生的秘钥的有效性.</span></span><br><span class="line">	secretKeyNum := <span class="built_in">new</span>(big.Int).SetBytes(secretKey)</span><br><span class="line">	<span class="keyword">if</span> secretKeyNum.Cmp(btcec.S256().N) &gt;= <span class="number">0</span> || secretKeyNum.Sign() == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, ErrUnusableSeed</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	parentFP := []<span class="keyword">byte</span>&#123;<span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>&#125;</span><br><span class="line">	<span class="keyword">return</span> NewExtendedKey(net.HDPrivateKeyID[:], secretKey, chainCode,</span><br><span class="line">		parentFP, <span class="number">0</span>, <span class="number">0</span>, <span class="literal">true</span>), <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="扩展密钥"><a href="#扩展密钥" class="headerlink" title="扩展密钥"></a>扩展密钥</h3><p>确定性钱包中，主密钥通过密钥导出算法得到子扩展密钥。</p>
+<p>扩展密钥是由父密钥，通过密钥导出算法，得到的包含链码等信息的子秘钥。</p>
+<p>扩展密钥包含4部分信息: 1字节的密钥树深度，4字节的密钥指纹，4字节的子序号，以及32字节的链码和33字节的密钥。</p>
+<p>私钥有前缀0x00,而扩展公钥为压缩形式，有前缀0x03或0x04，因此它们都为33字节。</p>
+<p>由父扩展密钥，子序号和链码，可以计算得到相应的子扩展密钥。计算的方法在BIP-32协议中有具体的规定。</p>
+<p>子序号最大为$2^{32}$,协议中规定当序号大于$2^{31}$时，用$N’$表示$2^{31}+N$。这样的目的是，区分由两种不同的密钥导出算法得到的子密钥。</p>
+<p>两种密钥导出算法:</p>
+<p>硬导出(Harden Derivation)</p>
+<blockquote>
+<ol>
+<li>输入父私钥，链码，指定的子序号$m’$(&gt;$2^{31}$)</li>
+<li>过HMAC-SHA512算法得到512比特哈希值。</li>
+<li>将512比特哈希值分为两组，每组256比特</li>
+<li>前256比特与父私钥相加然后模椭圆曲线的阶N得到子私钥。</li>
+<li>子私钥通过椭圆曲线算法计算得到子公钥。</li>
+<li>后256比特作为链码。 </li>
+</ol>
+</blockquote>
+<p><img src="http://wx3.sinaimg.cn/mw690/844f0132gy1furoin0bnkj20sw0hxjsu.jpg" alt="Alt text"></p>
+<p>公共导出(Public Derivation)</p>
+<blockquote>
+<ol>
+<li>输入父私钥，链码，指定的子序号$m$(&lt;2^{31})</li>
+<li>由父私钥计算得到父公钥(压缩公钥)为33字节。</li>
+<li>将父公钥，链码，子序号通过HMAC-SHA512算法得到512比特哈希值。</li>
+<li>将512比特哈希值分为两组，每组256比特。</li>
+<li>前256比特与父私钥相加然后模椭圆曲线的阶N得到子私钥。</li>
+<li>子私钥通过椭圆曲线算法计算得到子公钥。</li>
+<li>后256比特作为链码。 </li>
+</ol>
+</blockquote>
+<p><img src="http://wx4.sinaimg.cn/mw690/844f0132gy1furoind87vj20tf0i975t.jpg" alt="Alt text"></p>
+<p>硬导出算法确保了子密钥的泄露不会导致主密钥泄露，而公共导出则在某一层父密钥泄露的情况下，会导致所有的密钥泄露，但是它的子密钥是由父公钥扩展得到，使得这种算法的应用场景更多。</p>
+<p>通常钱包中结合使用了这两种密钥导出算法。</p>
+<hr>
+<h3 id="密钥路径"><a href="#密钥路径" class="headerlink" title="密钥路径"></a>密钥路径</h3><p>确定性钱包中，密钥都是通过主密钥由密钥导出算法得到，因此只需要输入对应的密钥路径，即可以通过密钥导出算法恢复出账户地址及对应的私钥。</p>
+<p>BIP-44协议中规定了密钥导出路径，一般格式为: m / purpose’ / coin_type’ / account’ / change / address_index</p>
+<p>puporse‘: 表示协议类型, 一般为44’即数字 $2^{31} + 44$。<br>coin_type: 表示数字货币类型，以太币类型为 66’即数字$2^{31} + 44$。<br>account’:从这一层级开始由主密钥导出子秘钥，第一层级使用硬导出，即子序号大于$2^{31}$,第一个账户为$0’$。<br>change : 以太坊钱包不需要这一层路径。<br>address_index : 第二层子密钥，使用公共导出，得到扩展公钥作为账户地址。</p>
+<p><img src="http://wx4.sinaimg.cn/mw690/844f0132gy1furoinuuzqj20pt0ha75z.jpg" alt="Alt text"></p>
+<p>例如: m/44’/60’/0’/0 表示根据Bip-44协议的路径，生成的以太币的第一个硬私钥的第一个账户地址。</p>
+<p>这样，通过密钥路径，钱包由种子实现了对账户的管理，同时由路径可以恢复出私钥，实现了对交易的签名。</p>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    DianL
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://ldlovezyh.cn/2018/07/25/以太坊钱包/" title="以太坊钱包原理">http://ldlovezyh.cn/2018/07/25/以太坊钱包/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/以太坊/" rel="tag"><i class="fa fa-tag"></i> 以太坊</a>
+          
+            <a href="/tags/GO/" rel="tag"><i class="fa fa-tag"></i> GO</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/23/Account源码阅读/" rel="next" title="以太坊Account源代码阅读">
+                <i class="fa fa-chevron-left"></i> 以太坊Account源代码阅读
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/01/以太坊POW算法Ethash/" rel="prev" title="以太坊Pow共识算法">
+                以太坊Pow共识算法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://wx2.sinaimg.cn/mw690/844f0132gy1fuqqkjjtr8j20g40g4tof.jpg"
+                alt="DianL" />
+            
+              <p class="site-author-name" itemprop="name">DianL</p>
+              <p class="site-description motion-element" itemprop="description">吾乃事奉无上至尊之人。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                 RSS
+	      </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/llllddd" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://weibo.com/u/2219770162" target="_blank" title="微博">
+                    
+                      <i class="fa fa-fw fa-weibo"></i>微博</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+              </a>
+            </div>
+          
+
+          
+          
+
+          
+<!--
+</br>
+<div id="music163player">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=320 height=86 src="//music.163.com/outchain/player?type=2&id=22755679&auto=1&height=66"></iframe>
+</div>
+-->
+
+<div id="music163player">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=536098015&auto=1&height=66"></iframe>
+</div>
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#钱包的类型"><span class="nav-number">1.</span> <span class="nav-text">钱包的类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非确定性钱包"><span class="nav-number">2.</span> <span class="nav-text">非确定性钱包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#私钥的存储"><span class="nav-number">2.1.</span> <span class="nav-text">私钥的存储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#私钥文件的读取"><span class="nav-number">2.2.</span> <span class="nav-text">私钥文件的读取</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#确定性钱包"><span class="nav-number">3.</span> <span class="nav-text">确定性钱包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#助记码"><span class="nav-number">3.1.</span> <span class="nav-text">助记码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#由种子得到密钥"><span class="nav-number">3.2.</span> <span class="nav-text">由种子得到密钥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展密钥"><span class="nav-number">3.3.</span> <span class="nav-text">扩展密钥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#密钥路径"><span class="nav-number">3.4.</span> <span class="nav-text">密钥路径</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DianL</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.3"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.3"></script>
+
+
+  
+
+
+</body>
+</html>
