@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.cat.net/css?family=Roboto Slab:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="密码学,同态加密," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="LoveLotus" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="This thesis describes a SwHE encryption scheme and it is transformed into a FHE scheme base on Gentry’s bootstrap technique. Operations of the scheme is over integers instead of working with ideal lat">
+<meta name="keywords" content="密码学,同态加密">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fully Homomorphic Encryption Over Integers">
+<meta property="og:url" content="http://ldlovezyh.cn/2017/03/04/3.Fully+Homomorphic Encryption over the Integers/index.html">
+<meta property="og:site_name" content="LoveLotus">
+<meta property="og:description" content="This thesis describes a SwHE encryption scheme and it is transformed into a FHE scheme base on Gentry’s bootstrap technique. Operations of the scheme is over integers instead of working with ideal lat">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-30T10:26:57.962Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Fully Homomorphic Encryption Over Integers">
+<meta name="twitter:description" content="This thesis describes a SwHE encryption scheme and it is transformed into a FHE scheme base on Gentry’s bootstrap technique. Operations of the scheme is over integers instead of working with ideal lat">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: 'undefined',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+<script>
+    (function(){
+        if(''){
+            if (prompt('Password:') !== ''){
+                alert('ERROR');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+
+  <link rel="canonical" href="http://ldlovezyh.cn/2017/03/04/3.Fully+Homomorphic Encryption over the Integers/"/>
+
+
+
+
+
+  <title>Fully Homomorphic Encryption Over Integers | LoveLotus</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b0339818ee7d3ca09ef6f121603241e1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">LoveLotus</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-essay">
+          <a href="/categories/专栏" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-star"></i> <br />
+            
+            星
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ldlovezyh.cn/2017/03/04/3.Fully+Homomorphic Encryption over the Integers/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="DianL">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://wx2.sinaimg.cn/mw690/844f0132gy1fuqqkjjtr8j20g40g4tof.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LoveLotus">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Fully Homomorphic Encryption Over Integers</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-04T00:00:00+08:00">
+                2017-03-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/同态加密/" itemprop="url" rel="index">
+                    <span itemprop="name">同态加密</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>This thesis describes a SwHE encryption scheme and it is transformed into a FHE scheme base on Gentry’s bootstrap technique. Operations of the scheme is over integers instead of working with ideal lattices over a polynomial ring. Usually, we call this encryption scheme DGHV scheme because it is developed by Dijk, Gentry, Halevi and Vaikuntanathan.</p>
+<hr>
+<h2 id="A-Simple-Symmetric-Encryption-Scheme"><a href="#A-Simple-Symmetric-Encryption-Scheme" class="headerlink" title="A Simple Symmetric Encryption Scheme"></a>A Simple Symmetric Encryption Scheme</h2><p>To begin with, they introduce a simple symmetric encryption scheme with modular exponentiation :<br>The plaintext space of the scheme is ${0,1}$ and cipertext space is $\mathbb{Z}$.</p>
+<div class="note default"><p><strong>Encrypt</strong>$(p,m)$: $c=m+pq+2r$</p>
+<p><strong>Decrypt</strong>$(p,c)$: $m=(c\text{mod}p)\text{mod}2=(c-p\ast\lceil c/p \rfloor)\text{mod}2$</p></div>
+<p>This scheme is very easy to understand for us. Cipher $c$ modulo $p$ then $q$ is eliminate and modulo 2 then 2r is eliminate so we get the message $m$. There many prior works involved this scheme, however they don’t observe that the scheme could support multiplicative homomorphism and their encrypyion scheme is delicate with attacks. Thus modifications of this symmetric encryption scheme is on the analysis of its flaws. </p>
+<hr>
+<h3 id="Calculation-Proof"><a href="#Calculation-Proof" class="headerlink" title="Calculation Proof"></a>Calculation Proof</h3><p>As we can see, this is just an symmetric encryption scheme if we public the integer $pq$ then the secret key is revealed at once. In order to get a public key encryption scheme we need to reduce the security of this scheme to some hardness of math problem(i.e. approximate GCD problem). Can this symmetric encryption realize homomorphic calculation? We have following equations:</p>
+<div class="note default"><p>$$c_1+c_2=(m_1+m_2)+p(q_1+q_2)+2(r_1+r_2)$$<br>$$c_1\ast c_2=(m_1+2r_1)\ast(m_2+2r_2)+p(m_1q_2+m_2q_1+pq_1q_2q_1r_2+2q_2r_1)$$</p></div>
+<p>If decryption of these ciphertexts are $m_1+m_2$ and $m_1\ast m_2$, we can say it has correct homomorphic decryption. However, noise produced by multiplication is the product of both noise (i.e. $(m_1+2r_1)\ast(m_2+2r_2) $) and it increases quickly, but we need to keep the noise smaller than a bound $p/2$ so that we can get the correct decryption. Because of the bound of noise the scheme can support a limited number of additions and multiplications. </p>
+<p>Due to the negative factors above, there are two works for converting this symmetric encryption scheme into a FHE scheme. First, they construct a SwHE scheme by generating a public key which consists of many “encryptions of zero” (i.e $x_i=pq_i+r_i$) and reduce the security of the symmetric scheme to the hardness of the approximate integer greatest common divisor problem(Approximate GCD problem).</p>
+<p>Then using Gentry’s technique “quash the decryption circuit” to get a bootstrapple scheme which can invoke Gentry’s bootstrapping theorem to obtain a FHE scheme.It’s necessary to mention that with appropriate choice of parameters, this scheme has good resistance to various attacks.</p>
+<hr>
+<h2 id="SwHE-Scheme"><a href="#SwHE-Scheme" class="headerlink" title="SwHE Scheme"></a>SwHE Scheme</h2><p>From the procedure of encryption, we can see zero is encrypted by $x_i=pq+2r$ and add them to the cipher don’t influence the decryption because decryption of $x_i$ is still zero. But we can public these random encryption of zeros because of the approximate GCD problem that is to say an attacker can’t get $p$ from $x_i$. Thus we get an pubic key encryption scheme. For somewhat homomorphic calculations there adding an extra procedure <strong>Evaluate</strong> which is a operating circuit that can be used for homomorphic calculations.</p>
+<p>Because of limitation of depth of the circuit we still need to keep the noise produced by polynomials is smaller than $p/2$ (i.e. noise produced by $f(c_1,c_2,\ldots,c_t)$ is smaller than  $p/2$) and these polynomials are called permitted polynomials denoted by $\mathcal{P_{\varepsilon}}$ the set of circuits for these permitted polynomials is denoted by $\mathcal{C_{\varepsilon}}$. Once we construct a SwHE scheme it must be correct for $\mathcal{C_{\varepsilon}}$.</p>
+<p>This SwHE scheme requires several parameters,The choice of these parameter values refer to many considerations. I think they are calculated when considering the noise bound and the defense of many attacks to the scheme. In short, there are four parameters for encryption context: $\rho$ is the bit-length of the noise , $\gamma$ is the bit-length of the integers in the public key, $\tau$ is the number of integers in the public key and $\eta$  is the bit-length of the secret key. </p>
+<hr>
+<h3 id="Construction"><a href="#Construction" class="headerlink" title="Construction"></a>Construction</h3><p>The following is the main construction of the scheme:</p>
+<div class="note default"><p><strong>KeyGen</strong>$(\lambda)$: Secret key $p$ is a random $\eta$ bit integer. Public key $\text{pk}=&lt;x_0,x_1,\ldots,x_{\tau}&gt;$</p></div>
+<p>$x_i$ is generated by random encryption of zeroes:<br>$$\mathcal{D_{\gamma,\rho}}(p)=\left(q\stackrel{\$}{\leftarrow}\mathbb{Z}\cap\left[0,2^{\lambda}/p\right),r\stackrel{\$}{\rightarrow}\mathbb{Z}\cap(-2^{\rho},2^{\rho}):x=pq+r\right)$$<br>we must keep $x_0$ odd.</p>
+<div class="note default"><p><strong>Encrypt</strong> $(pk,m\in{0,1})$: $c=[m+2r+2\sum_{i\in S}x_i]_{x_0}$, $S\in {1,2\ldots,\tau}$</p></div>
+<p>This step is the main difference from the symmetric encryption scheme. Through adding the encryption of zeroes we can reduce the security of this scheme to the hardness of the approximate GCD problem. Namely, given a set of integers $x_0,x_1,\ldots,x_t$ an attacker can’t find the common near divisor $p$. Thus we can public these integers as public key then we construct a public key encryption scheme.</p>
+<div class="note default"><p><strong>Evaluate</strong> $(\text{pk},C,c_1,\ldots,c_t)$: $C(\mathcal{P_{\epsilon}}\in\mathcal{C_\epsilon}$ Calculate $c’=f(c_1,\ldots,c_t)$.</p></div>
+<p>This step we implement homomorphic calculations on ciphers, however the problem of noise is still exist so $f\in\mathcal{P}_\epsilon$ the concrete degree $d$ of $f$ should rely on the bound of noise which must smaller than $p/2$ and in this scheme $d\leq\frac{\eta-4-\log\left|\vec{f}\right|}{\rho’+2}$ .So this scheme is just `somewhat’.</p>
+<div class="note default"><p><strong>Decrypt</strong>$(sk,$c$)$:  $m’=(c\text{mod}p)\text{mod}2=(c\text{mod}2)\oplus(\left\lfloor c/p\right\rceil\text{mod}2)$</p></div>
+<p>Decryption is similar to the symmetric version. We reduce the noise by modular arithmetic and we can find that encrypt same message $m$ may get different ciphers because of the randomness of $x_i$ but decryption of these ciphers is same. </p>
+<hr>
+<h3 id="Security"><a href="#Security" class="headerlink" title="Security"></a>Security</h3><p>Recall that the security of our SwHE scheme rely on the hardness of approximate GCD problem. Many attacks are described which can solve the approximate GCD problem. The choice of parameters in the SwHE scheme achieves at least $2^\lambda$  security against these attacks and I think there must exist better choice.</p>
+<hr>
+<h2 id="Fully-Homomorphic-Encryption"><a href="#Fully-Homomorphic-Encryption" class="headerlink" title="Fully Homomorphic Encryption"></a>Fully Homomorphic Encryption</h2><p>From this SwHE scheme they follow Gentry’s approach for constructing a FHE scheme. As we mentioned above calculations of ciphers increase the noise which may beyond the arithmetic depth of circuit and decryption can reduce the noise of ciphers so if we can decrypt the cipher before the result of homomorphic calculation up to the bound of noise thus we can do any calculations on the ciphers.</p>
+<p> This strategy is called `homomorphic decryption’ specifically we add a augment decryption circuit named $D_\varepsilon(\lambda)$(r is the security parameter)to the SwHE scheme it’s obviously that if $D_\varepsilon(\lambda)\subseteq\mathcal{C}_\varepsilon(\lambda)$ the decryption circuit is feasible for the scheme. Thus we say that the encryption scheme $\varepsilon$ is bootstrappable and we can get a FHE scheme. However, we can’t use the secret key $p$ for the augment decryption circuit directly because it requires boolean circuits that are deeper than what the SwHE scheme can handle. </p>
+<hr>
+<h3 id="Construction-1"><a href="#Construction-1" class="headerlink" title="Construction"></a>Construction</h3><p>Hence, Gentry’s transformation to “squash the decryption circuit” is used. Specifically, they add to the public key some extra information about the secret key, and use this extra information to “post process” the ciphertext. The extra information in the public key does not help an attacker break the scheme because of hardness assumption of SSSP. The main part of the modified encryption scheme is as the follows:</p>
+<div class="note default"><p><strong>KeyGen</strong>: $\text{sk}=\vec{s}$, $\text{pk}=(pk^\ast,\vec{y})$</p></div>
+<p>Where $\vec{s}=\left\langle s_1,\ldots,s_\Theta\right\rangle$ and its hamming weight is $\theta$, $S={i:s_i=1}$. $\vec{y}=\left\langle y_1,\ldots,y_\Theta\right\rangle$ it contains information of secret key because $\left[\sum_{i\in S}y_i\right]_2=(1/p)-\triangle_p$.$S$ is a sparse set so attacker can’t know the secret key because of SSSP.</p>
+<div class="note default"><p><strong>Encrypt &amp; Evaluate</strong>: Set $z_i\leftarrow\left[c^{\ast}\cdot y_i\right]_2,i\in{1,\ldots,\Theta}$ Output$(c^{\ast},\vec{z})$</p></div>
+<p>This step can be considerate as expansion of ciphers where $z_i$ contains information about $p$(i.e. $\left[c^*/p\right]=\left\lfloor \sum s_iz_i\right\rfloor(\text{mod}2)$).</p>
+<div class="note default"><p><strong>Decrypt</strong>: $m’=\left[c^*-\left\lfloor \sum_is_iz_i\right\rceil\right]_2$</p></div>
+<p>In the thesis they prove that the modified scheme is also correct for $C(\mathcal{P_\varepsilon})$. And the modified decryption equation can be considerate as a permitted polynomial so we get the augmented (squashed) decryption circuits(i.e. $D_\varepsilon\subset C(\mathcal{P_\varepsilon})$).</p>
+<hr>
+<h2 id="Note"><a href="#Note" class="headerlink" title="Note"></a>Note</h2><p>I write the main ideas of constructing a FHE scheme, in fact this thesis gives us a concrete application of Gentry’s technique which help me to understand FHE a lot. However,I don’t understand many details of the proof of bootstrapping so far, I think I need to work harder and read the paper repeatedly. </p>
+<hr>
+<p><strong>Reference</strong><br><a href="https://eprint.iacr.org/2009/616.pdf" target="_blank" rel="noopener">Fully Homomorphic Encryption over the Integers</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    DianL
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://ldlovezyh.cn/2017/03/04/3.Fully+Homomorphic Encryption over the Integers/" title="Fully Homomorphic Encryption Over Integers">http://ldlovezyh.cn/2017/03/04/3.Fully+Homomorphic Encryption over the Integers/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/密码学/" rel="tag"><i class="fa fa-tag"></i> 密码学</a>
+          
+            <a href="/tags/同态加密/" rel="tag"><i class="fa fa-tag"></i> 同态加密</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/23/2.Can Homomorphic Encryption be Practica/" rel="next" title="Can Homomorphic Encryption be Practical">
+                <i class="fa fa-chevron-left"></i> Can Homomorphic Encryption be Practical
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/15/4.BGV Scheme/" rel="prev" title="The Second Generation FHE Scheme(BGV)">
+                The Second Generation FHE Scheme(BGV) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://wx2.sinaimg.cn/mw690/844f0132gy1fuqqkjjtr8j20g40g4tof.jpg"
+                alt="DianL" />
+            
+              <p class="site-author-name" itemprop="name">DianL</p>
+              <p class="site-description motion-element" itemprop="description">吾乃事奉无上至尊之人。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                 RSS
+	      </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/llllddd" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://weibo.com/u/2219770162" target="_blank" title="微博">
+                    
+                      <i class="fa fa-fw fa-weibo"></i>微博</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+              </a>
+            </div>
+          
+
+          
+          
+
+          
+<!--
+</br>
+<div id="music163player">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=320 height=86 src="//music.163.com/outchain/player?type=2&id=22755679&auto=1&height=66"></iframe>
+</div>
+-->
+
+<div id="music163player">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=536098015&auto=1&height=66"></iframe>
+</div>
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#A-Simple-Symmetric-Encryption-Scheme"><span class="nav-number">1.</span> <span class="nav-text">A Simple Symmetric Encryption Scheme</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Calculation-Proof"><span class="nav-number">1.1.</span> <span class="nav-text">Calculation Proof</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SwHE-Scheme"><span class="nav-number">2.</span> <span class="nav-text">SwHE Scheme</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Construction"><span class="nav-number">2.1.</span> <span class="nav-text">Construction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Security"><span class="nav-number">2.2.</span> <span class="nav-text">Security</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fully-Homomorphic-Encryption"><span class="nav-number">3.</span> <span class="nav-text">Fully Homomorphic Encryption</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Construction-1"><span class="nav-number">3.1.</span> <span class="nav-text">Construction</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Note"><span class="nav-number">4.</span> <span class="nav-text">Note</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DianL</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.3"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.3"></script>
+
+
+  
+
+
+</body>
+</html>

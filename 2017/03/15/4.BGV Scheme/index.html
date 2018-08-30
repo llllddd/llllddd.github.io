@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.cat.net/css?family=Roboto Slab:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="密码学,同态加密," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="LoveLotus" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="From the last thesis DGHV, We know that Gentry’s approach for constructing a FHE scheme is using a method called squashing the decryption circuit to make a SwHE scheme bootstrapple. In this thesis, Br">
+<meta name="keywords" content="密码学,同态加密">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The Second Generation FHE Scheme(BGV)">
+<meta property="og:url" content="http://ldlovezyh.cn/2017/03/15/4.BGV Scheme/index.html">
+<meta property="og:site_name" content="LoveLotus">
+<meta property="og:description" content="From the last thesis DGHV, We know that Gentry’s approach for constructing a FHE scheme is using a method called squashing the decryption circuit to make a SwHE scheme bootstrapple. In this thesis, Br">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-30T10:27:06.526Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="The Second Generation FHE Scheme(BGV)">
+<meta name="twitter:description" content="From the last thesis DGHV, We know that Gentry’s approach for constructing a FHE scheme is using a method called squashing the decryption circuit to make a SwHE scheme bootstrapple. In this thesis, Br">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: 'undefined',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+<script>
+    (function(){
+        if(''){
+            if (prompt('Password:') !== ''){
+                alert('ERROR');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+
+  <link rel="canonical" href="http://ldlovezyh.cn/2017/03/15/4.BGV Scheme/"/>
+
+
+
+
+
+  <title>The Second Generation FHE Scheme(BGV) | LoveLotus</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b0339818ee7d3ca09ef6f121603241e1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">LoveLotus</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-essay">
+          <a href="/categories/专栏" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-star"></i> <br />
+            
+            星
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ldlovezyh.cn/2017/03/15/4.BGV Scheme/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="DianL">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://wx2.sinaimg.cn/mw690/844f0132gy1fuqqkjjtr8j20g40g4tof.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LoveLotus">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">The Second Generation FHE Scheme(BGV)</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-15T00:00:00+08:00">
+                2017-03-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/同态加密/" itemprop="url" rel="index">
+                    <span itemprop="name">同态加密</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>From the last thesis DGHV, We know that Gentry’s approach for constructing a FHE scheme is using a method called squashing the decryption circuit to make a SwHE scheme bootstrapple. In this thesis, Brakerski, etc. present a new approach to FHE based on GLWE without bootstrapping i.e. Key switching and modulus switching.   </p>
+<hr>
+<h2 id="SwHE-Scheme"><a href="#SwHE-Scheme" class="headerlink" title="SwHE Scheme"></a>SwHE Scheme</h2><p>As in Gentry’s blueprint, the first step is to construct a SwHE scheme which can evaluate “low-degree” operation polynomials homomorphically. Here we use the generalization of the SwHE scheme in BV11b.</p>
+<p>Because the security of the scheme is based on GLWE which is a generalization consists of both LWE and RLWE.The definition of GLWE includes four parameters $n$,$f$,$q$,and$\chi$.LWE is simply GLWE instantiated with $d = 1$. RLWE is GLWE instantiated with n = 1. So the basic GLWE-based encryption scheme can be transformed into LWE-based encryption scheme or RLWE-based encryption scheme with different choices of parameters. </p>
+<p>The scheme works as follows:</p>
+<div class="note default"><p><strong>KeyGen</strong>: Let $\textbf{t}\leftarrow \chi^n$.Output $sk=\textbf{s}\leftarrow(1,\textbf{t})\in R_q^{n+1}$.The public key $pk$=$\textbf{A}\in R_q^{N\times {n+1}}$, $\textbf{A}=(\textbf{b}||\textbf{B})$ in which $\textbf{B}\leftarrow R_q^{N\times n}$ and set $\textbf{b}:=\textbf{B}\textbf{t}+2\textbf{e}$($\textbf{e}\leftarrow \chi^n$). </p>
+<p><strong>Encrypt</strong>: Message space is $m\in R_2$, set $\textbf{m}:=(m,0,\ldots,0)\in R_q^{n+1}$, sample $\textbf{r}\leftarrow R_2^N$ and output the ciphertext $\textbf{c}:=\textbf{m}+ \textbf{A}^T\textbf{r}\in R_q^{n+1}$. </p>
+<p><strong>Decrypt</strong> : Output $m=\left[ \left[\left\langle \textbf{c},\textbf{s}\right\rangle\right]_q \right]_2=\left[\left[(\textbf{m}^T+r^T\textbf{A}\cdot s\right]_q\right]_2=\left[\left[m+2\textbf{r}^T\textbf{e}\right]_q\right]_2=\left[m+2\textbf{r}^T\textbf{e}\right]_2$</p></div>
+<hr>
+<h2 id="Noise-Reduction"><a href="#Noise-Reduction" class="headerlink" title="Noise Reduction"></a>Noise Reduction</h2><p>Noise increases sharply after operation of ciphertexts in this symmetric encryption, in order to reduce the magnitude of the noise they construct a leveled-FHE scheme. Namely the noise of ciphertext is refreshed level by level after calculated, so the parameters of the scheme depend on the depth of the circuits. Like the re-encrypt procedure we need change the secret key every level and then refresh the ciphertexts. In this thesis they present two techniques to implement these two steps: Key switching and Modulus switching.</p>
+<hr>
+<h3 id="Key-switching"><a href="#Key-switching" class="headerlink" title="Key switching"></a>Key switching</h3><p>In order to reduce the dimension of the homomorphic multiplication of ciphertexts, Brakerski and Vaikuntanathan use a method called ` relinearization’  which I introduced in my first summary, $\textbf{c}_1=\textbf{Enc}(m_1,s_1),\textbf{c}_2=\textbf{Enc}(m_2,s_2)$, it’s because that the ciphertexts are ring elements, multiplication of these two ciphertexts  we get a new ciphertext represented by the coefficients of the linear equation $L^{long}$ and decryptable by the long tensored secret key $s_1\otimes s_2$.Through the relinearization method they are turned into a shorter ciphertext $\textbf{c}_2$ that is decryptable by another secret key $s_2$.</p>
+<p>Essentially, this method transform a ciphertext $\textbf{c}=\textbf{Enc}(m,s)$  into another ciphertext $\textbf{c}’=\textbf{Enc}(m,s’)$. This generalization is called the generalization Key switching procedure. First this procedure includes two subroutines:</p>
+<div class="note default"><ol>
+<li><p><strong>BitDecomp</strong>$(\textbf{c},q)=(\textbf{u_0},\textbf{u_1},\ldots,\textbf{u}_{\left\lfloor \log q\right\rfloor})\in R_2^{n\cdot \left\lfloor \log q\right\rfloor}$ ,$\textbf{c}=\sum_{j=0}^{\left\lfloor \log q\right\rfloor} 2^j\cdot\textbf{u}_j$.</p>
+</li>
+<li><p><strong>Powersof2</strong>$(\textbf{s},q)=(\textbf{x},2\cdot\textbf{x},\ldots,2^{\left\lfloor \log q\right\rfloor}\cdot\textbf{x})\in R_q^{n\cdot \left\lfloor \log q\right\rfloor}$.  </p>
+</li>
+</ol></div>
+<p>It’s not difficult to see that the BitDecomp step is to decompose every component $c_i$ of $\textbf{c}$ with the base of 2. Then the $n$ coefficients of $2^j$ composes the vector $\textbf{u}_j\in R_2^n$, finally we get $\left\lfloor \log q\right\rfloor$ vectors together, because the largest component of $\textbf{c}\in R_q^n$ can only be $q-1$.PowerSof2 step is just to multiply the vector $\textbf{s}\in R_q^n$ by the base $2^j,(1\leq j\leq \left\lfloor \log q\right\rfloor)$ so that we have the following equation:<br>$$\left\langle \text{BitDecomp}(\textbf{c},q),\text{Powersof2}(\textbf{s},q)\right\rangle=\left\langle \textbf{c},\textbf{s} \right\rangle\text{mod}q$$</p>
+<p>The key switching procedure consists of two procedures too.</p>
+<div class="note default"><ol>
+<li><p>$\textbf{A}\leftarrow \text{PublicKeyGen}(s_2,N)$,$\textbf{A}\in R_q^{N\cdot n_2+1},N=n_1\cdot \left\lceil \text{log}q\right\rceil$.<br>$\tau_{s_1\rightarrow s_2}=B,B=(\text{powersof2}(\textbf{s}_1)||\textbf{A})$. </p>
+</li>
+<li><p><strong>SwitchKey</strong>$(\tau_{s_1\rightarrow s_2},\textbf{c}_1)$: $\textbf{c}_2=\text{BitDecomp}(\textbf{c}_1^T\cdot\textbf{B})$.</p>
+</li>
+</ol></div>
+<p>In fact, the matrix $\textbf{A}$ basically consists of encryptions of 0 under the key $\textbf{s}_2$, so in some sense, the matrix $\textbf{B}$ consists of encryptions of pieces of $\textbf{s}_1$ under the key $\textbf{s}_2$. This procedure transform a ciphertext $\textbf{c}_1$ encrypted by $\textbf{s}_1$ into another ciphertext $\textbf{c}_2$ encrypted by $\textbf{s}_2$. The correctness of the processes is guaranteed by: $$\left\langle \textbf{c}_2,\textbf{s}_2\right\rangle=2\left\langle \text{BitDecomp}(\textbf{c}_1),\textbf{e}_2\right\rangle+\left\langle \textbf{c}_1,\textbf{s}_1\right\rangle \text{mod}q$$</p>
+<hr>
+<h3 id="Modulus-switching"><a href="#Modulus-switching" class="headerlink" title="Modulus switching"></a>Modulus switching</h3><p>The second amazing technique for reduce the noise of ciphertexts calculated from the last level arithmetic circuit is called modulus switching. As we can see above in the decryption step of the SwHE scheme, after several operations the noise $\left[\left\langle \textbf{c},\textbf{s}\right\rangle\right]_q$ is greater then the upper bound. </p>
+<p>However, through modulus switching we can change the inner modulus in the decryption equation to $\left[\left\langle \textbf{c}’,\textbf{s}\right\rangle\right]_p$ where $\textbf{c}’$ is closest to $(p/q )\cdot\textbf{c}$ such that $\textbf{c}’=\textbf{c}\text{mod}2$. Concretely, it maintain these two properties:$$\left[\left\langle \textbf{c}’,\textbf{s}\right\rangle\right]_p=\left[\left\langle \textbf{c},\textbf{s}\right\rangle\right]_q \text{mod}2$$<br>$$\left|\left[\left\langle \textbf{c}’,\textbf{s}\right\rangle\right]_p\right|&lt;(p/q)\cdot\left|\left[\left\langle \textbf{c},\textbf{s}\right\rangle\right]_q\right|+\ell_1(\textbf{s})$$</p>
+<p>From above we can see modulus switching will change the size of ciphertexts and size of modulus. And the magnitude of the noise is depend on the modulus $p$(i.e., noise $e_p=\left[\left\langle \textbf{c}’,\textbf{s}\right\rangle\right]_p&lt;p/2$), so if $p$ is smaller than $q$ and $\textbf{s}$ has coefficients that are small in relation to $q$ then we can reduce the magnitude of the noise without knowing the secret key. </p>
+<p>So choose a ladder of gradually decreasing moduli and use the properties above repeatedly. The noise of ciphertexts will decrease gradually, in fact, through modulus switching the noise is reduced by a fixed ratio and the noise is essentially kept constant. So, it’s help to increase the number of multiplicative levels that can be evaluated by an exponential factor. However, modulus size can’t be decreased without any limits, after polynomial times operation the noise will reach to the noise ceiling in the end. So, the leveled FHE without bootstrapping will be bounded by the maximum depth of circuits that can be evaluated, and parameters of this encryption scheme will depend on the level.</p>
+<hr>
+<h2 id="Leveled-FHE"><a href="#Leveled-FHE" class="headerlink" title="Leveled FHE"></a>Leveled FHE</h2><p>Using these two techniques above ciphertexts can be refreshed after every level arithmetic circuit to reduce the the magnitude of the noise so that a leveled FHE scheme is gained by adding the refresh procedure to the SwHE scheme. In the refresh procedure of the scheme, we first use key switching change the $i+1$ level ciphertext $\textbf{c}$ encrypted by $\textbf{s}_{i+1}$ into a ciphertext $\textbf{c}’$ encrypted by $\textbf{s}_i$. Then we can do module switching to reduce the noise without changing secret key but the inner modulus. </p>
+<p>So we can run the arithmetic circuit to level 0 all the time and output the final cipertexts which can be decrypted correctly. However, in RLWE setting the length of ciphertexts output by the arithmetic circuits is depend on the circuit levels, for compactness they show a method to break an $GLWE_{n,x^d+1,q,\chi}$ into two $GLWE_{2n,x^{d/2}+1,q,\chi}$-dimension is decreased from $d$ to $d/2$ and length increase form $n$to $2n$. So the dimension of ciphertexts can be kept independent and in order to reduce length of the processed ciphertext the message is encoded in even coefficients so decrypt even coefficients of the ciphertexts is enough, essentially, the length of ciphertexts is still $n$. Finally, a leveled FHE can be got without bootstrapping based on RLWE. </p>
+<hr>
+<h3 id="Parameters-Restriction"><a href="#Parameters-Restriction" class="headerlink" title="Parameters Restriction"></a>Parameters Restriction</h3><p>For correctness of this leveled FHE scheme, it is sufficient to set proper parameters of the scheme to ensure that the noise produced by encryption and evaluation is smaller than the global noise bound $B$, namely, the maximum length of noise that the scheme can decrypt correctly. So, calculate the noise produced by every step of the scheme and put them together to look for which parameters influence the final noise and give proper setting to these parameters to ensure the ciphertext can be decrypted correctly. </p>
+<p>The following is the result of related calculation:</p>
+<div class="note default"><p>$ (q_{j-1}/q{j})\cdot(\gamma_R\cdot B^2+\eta_{\text{ SwitchKey},j})+\eta_{ \text{Scale},j} $<br>$&lt; (q_{j-1}/q{j})\cdot\gamma_R\cdot B^2 +\eta_{ \text{Scale},j}+\eta_{\text{ SwitchKey},j}$<br>$\leq \frac{1}{2\cdot B\cdot \gamma_R}\cdot \gamma_R\cdot B^2+\frac{1}{2}\cdot B$<br>$\leq B$</p></div>
+<p>So, it only remains to set the ladder of moduli ($q_j$) and B, and the largest modulus used in this scheme is $\theta (L\cdot (\text{log}\lambda+\text{log}L))$ bits.</p>
+<hr>
+<h3 id="Security"><a href="#Security" class="headerlink" title="Security"></a>Security</h3><p>The security of this leveled FHE is IND-CPA, namely, semantic secure. The proof of the security is follow by a standard hybrid argument from the security of the SwHE scheme. The probability of the CPA adversary to win the Hybrid game which is similar to the IND-CPA game is negl($\lambda$)</p>
+<p>As the leveled FHE is limited by the depth of arithmetic circuit, the optimization of bootstrapping with circular security assumption can help perform homomorphic evaluations without a bound of circuit levels. In order to improve the efficiency of evaluating, batching the bootstrapping operation is a reasonable method. That is to decompose a ring $R_p$ to the direct sum of some ring ideals $R_{\mathfrak{p}_i}$.</p>
+<p>By Chinese remainder theorem $R_p \cong R_{\mathfrak{p_1}}\oplus \cdots \oplus R_{\mathfrak{p_d}}$ so that evaluating a function once over $R_p$ implicitly evaluates the function many times in parallel over the smaller plaintext spaces.</p>
+<hr>
+<h2 id="Note"><a href="#Note" class="headerlink" title="Note"></a>Note</h2><p>The core procedure of the FHE scheme is the refresh step which consists of two techniques. These two tricks are very impressive and they dose reduce the noise. And I learn the difference between SwHE, Leveled-FHE and FHE.   However, as I know，Helib can implement the BGV scheme thus，I don’t know any thing about that so it is still remain many things for us to do.  </p>
+<hr>
+<p><strong>Reference</strong></p>
+<p><a href="https://eprint.iacr.org/2011/277.pdf" target="_blank" rel="noopener"> (Leveled) Fully Homomorphic Encryption without Bootstrapping</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    DianL
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://ldlovezyh.cn/2017/03/15/4.BGV Scheme/" title="The Second Generation FHE Scheme(BGV)">http://ldlovezyh.cn/2017/03/15/4.BGV Scheme/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/密码学/" rel="tag"><i class="fa fa-tag"></i> 密码学</a>
+          
+            <a href="/tags/同态加密/" rel="tag"><i class="fa fa-tag"></i> 同态加密</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/04/3.Fully+Homomorphic Encryption over the Integers/" rel="next" title="Fully Homomorphic Encryption Over Integers">
+                <i class="fa fa-chevron-left"></i> Fully Homomorphic Encryption Over Integers
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/09/5.GSW Scheme/" rel="prev" title="The Third Generation FHE Scheme(GSW)">
+                The Third Generation FHE Scheme(GSW) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://wx2.sinaimg.cn/mw690/844f0132gy1fuqqkjjtr8j20g40g4tof.jpg"
+                alt="DianL" />
+            
+              <p class="site-author-name" itemprop="name">DianL</p>
+              <p class="site-description motion-element" itemprop="description">吾乃事奉无上至尊之人。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                 RSS
+	      </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/llllddd" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://weibo.com/u/2219770162" target="_blank" title="微博">
+                    
+                      <i class="fa fa-fw fa-weibo"></i>微博</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+              </a>
+            </div>
+          
+
+          
+          
+
+          
+<!--
+</br>
+<div id="music163player">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=320 height=86 src="//music.163.com/outchain/player?type=2&id=22755679&auto=1&height=66"></iframe>
+</div>
+-->
+
+<div id="music163player">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=536098015&auto=1&height=66"></iframe>
+</div>
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SwHE-Scheme"><span class="nav-number">1.</span> <span class="nav-text">SwHE Scheme</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Noise-Reduction"><span class="nav-number">2.</span> <span class="nav-text">Noise Reduction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Key-switching"><span class="nav-number">2.1.</span> <span class="nav-text">Key switching</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Modulus-switching"><span class="nav-number">2.2.</span> <span class="nav-text">Modulus switching</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Leveled-FHE"><span class="nav-number">3.</span> <span class="nav-text">Leveled FHE</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Parameters-Restriction"><span class="nav-number">3.1.</span> <span class="nav-text">Parameters Restriction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Security"><span class="nav-number">3.2.</span> <span class="nav-text">Security</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Note"><span class="nav-number">4.</span> <span class="nav-text">Note</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DianL</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.3"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.3"></script>
+
+
+  
+
+
+</body>
+</html>
