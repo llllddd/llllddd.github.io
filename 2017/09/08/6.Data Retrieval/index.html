@@ -119,7 +119,7 @@
 
 
 
-  <meta name="keywords" content="密码学,同态加密,">
+  <meta name="keywords" content="同态加密,">
 
 
 
@@ -132,15 +132,20 @@
 
 
 
-<meta name="keywords" content="密码学,同态加密">
+<meta name="description" content="Recent days I read the paper SHIELD which introduces ciphertext retrieval using the variant of GSW scheme which is based on RLWE problem. I make an experiment based on GSW scheme and finally I get a">
+<meta name="keywords" content="同态加密">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ciphertexts retrieval and some possible optimizations">
-<meta property="og:url" content="http://ldlovezyh.cn/2017/09/08/test/index.html">
+<meta property="og:url" content="http://ldlovezyh.cn/2017/09/08/6.Data Retrieval/index.html">
 <meta property="og:site_name" content="LoveLotus">
+<meta property="og:description" content="Recent days I read the paper SHIELD which introduces ciphertext retrieval using the variant of GSW scheme which is based on RLWE problem. I make an experiment based on GSW scheme and finally I get a">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-06T14:36:10.911Z">
+<meta property="og:image" content="http://ldlovezyh.cn/2017/09/08/6.Data%20Retrieval/%22./1.png%22">
+<meta property="og:updated_time" content="2019-06-16T04:18:29.819Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ciphertexts retrieval and some possible optimizations">
+<meta name="twitter:description" content="Recent days I read the paper SHIELD which introduces ciphertext retrieval using the variant of GSW scheme which is based on RLWE problem. I make an experiment based on GSW scheme and finally I get a">
+<meta name="twitter:image" content="http://ldlovezyh.cn/2017/09/08/6.Data%20Retrieval/%22./1.png%22">
 
 
 
@@ -181,7 +186,7 @@
 
 
 
-  <link rel="canonical" href="http://ldlovezyh.cn/2017/09/08/test/">
+  <link rel="canonical" href="http://ldlovezyh.cn/2017/09/08/6.Data Retrieval/">
 
 
 
@@ -324,7 +329,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://ldlovezyh.cn/2017/09/08/test/">
+    <link itemprop="mainEntityOfPage" href="http://ldlovezyh.cn/2017/09/08/6.Data Retrieval/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="DianL">
@@ -413,14 +418,9 @@
       
 
       
-        
-
-	<div class="row">
-    <embed src="1.pdf" width="100%" height="550" type="application/pdf">
-	</div>
-
-
-
+        <p>  Recent days I read the paper SHIELD which introduces ciphertext retrieval using the variant of GSW scheme which is based on RLWE problem. I make an experiment based on GSW scheme and finally I get a correct result. During the process, I find two procedures which may help to compress the dimension of the ciphertexts and improve the computational efficiency. I get the result by comparing the SHIELD scheme with the GSW scheme.</p>
+<h2 id="Ciphertext-retrieval"><a href="#Ciphertext-retrieval" class="headerlink" title="Ciphertext retrieval"></a>Ciphertext retrieval</h2><p>  The message space of GSW scheme is $\mathbb{Z}_2$, and in order to retrieve the correct ciphertexts which are matching to the key words, we have to compare the ciphertexts bit by bit due to limitation of the retrieval algorithm. In fact, it is sufficient to use a SHE scheme for retrieval because we only need several homomorphic multiplications and one addtion in the the subroutine. This is a trivial method of ciphertext retrieval because the keywords are not encrypted<br>so the information we retrival may reveal to others. The main subroutines are the following pseudocode:</p>
+<p><img src="&quot;./1.png&quot;" alt=""></p>
 
       
     </div>
@@ -441,8 +441,6 @@
     <footer class="post-footer">
       
         <div class="post-tags">
-          
-            <a href="/tags/密码学/" rel="tag"><i class="fa fa-tag"></i> 密码学</a>
           
             <a href="/tags/同态加密/" rel="tag"><i class="fa fa-tag"></i> 同态加密</a>
           
@@ -523,8 +521,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -631,6 +638,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Ciphertext-retrieval"><span class="nav-number">1.</span> <span class="nav-text">Ciphertext retrieval</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

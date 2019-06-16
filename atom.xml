@@ -267,34 +267,24 @@
   
   <entry>
     <title>Ciphertexts retrieval and some possible optimizations</title>
-    <link href="http://ldlovezyh.cn/2017/09/08/test/"/>
-    <id>http://ldlovezyh.cn/2017/09/08/test/</id>
+    <link href="http://ldlovezyh.cn/2017/09/08/6.Data%20Retrieval/"/>
+    <id>http://ldlovezyh.cn/2017/09/08/6.Data Retrieval/</id>
     <published>2017-09-07T16:00:00.000Z</published>
-    <updated>2019-03-06T14:36:10.911Z</updated>
+    <updated>2019-06-16T04:18:29.819Z</updated>
     
-    <content type="html"><![CDATA[<div class="row">    <embed src="1.pdf" width="100%" height="550" type="application/pdf"></div>]]></content>
+    <content type="html"><![CDATA[<p>  Recent days I read the paper SHIELD which introduces ciphertext retrieval using the variant of GSW scheme which is based on RLWE problem. I make an experiment based on GSW scheme and finally I get a correct result. During the process, I find two procedures which may help to compress the dimension of the ciphertexts and improve the computational efficiency. I get the result by comparing the SHIELD scheme with the GSW scheme.</p><h2 id="Ciphertext-retrieval"><a href="#Ciphertext-retrieval" class="headerlink" title="Ciphertext retrieval"></a>Ciphertext retrieval</h2><p>  The message space of GSW scheme is $\mathbb{Z}_2$, and in order to retrieve the correct ciphertexts which are matching to the key words, we have to compare the ciphertexts bit by bit due to limitation of the retrieval algorithm. In fact, it is sufficient to use a SHE scheme for retrieval because we only need several homomorphic multiplications and one addtion in the the subroutine. This is a trivial method of ciphertext retrieval because the keywords are not encrypted<br>so the information we retrival may reveal to others. The main subroutines are the following pseudocode:</p><p><img src="&quot;./1.png&quot;" alt=""></p>]]></content>
     
     <summary type="html">
     
       
       
-        
-
-	&lt;div class=&quot;row&quot;&gt;
-    &lt;embed src=&quot;1.pdf&quot; width=&quot;100%&quot; height=&quot;550&quot; type=&quot;application/pdf&quot;&gt;
-	&lt;/div&gt;
-
-
-
-
+        &lt;p&gt;  Recent days I read the paper SHIELD which introduces ciphertext retrieval using the variant of GSW scheme which is based on RLWE proble
       
     
     </summary>
     
       <category term="同态加密" scheme="http://ldlovezyh.cn/categories/%E5%90%8C%E6%80%81%E5%8A%A0%E5%AF%86/"/>
     
-    
-      <category term="密码学" scheme="http://ldlovezyh.cn/tags/%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
     
       <category term="同态加密" scheme="http://ldlovezyh.cn/tags/%E5%90%8C%E6%80%81%E5%8A%A0%E5%AF%86/"/>
     
