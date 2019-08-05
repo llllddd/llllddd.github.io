@@ -200,23 +200,15 @@
     <link href="http://ldlovezyh.cn/2017/11/20/BPCryptoNets/"/>
     <id>http://ldlovezyh.cn/2017/11/20/BPCryptoNets/</id>
     <published>2017-11-19T16:00:00.000Z</published>
-    <updated>2019-03-06T14:32:45.071Z</updated>
+    <updated>2019-08-05T16:51:23.403Z</updated>
     
-    <content type="html"><![CDATA[<div class="row">    <embed src="3.pdf" width="100%" height="550" type="application/pdf"></div>]]></content>
+    <content type="html"><![CDATA[<h2 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1. Introduction"></a>1. Introduction</h2><p>Microsoft Research’s CryptoNets makes it possible to apply machine learning on encrypted data. And their Neural Networks is a type of convolution neural networks which is a deep networks. In this work, I present a light-weight BPCryptoNets which has only one hidden layer compared to the CryptoNets’ four hidden layers. The neural networks is actually a kind of back propagation neural networks which has only three layers in total. Due to the high overhead of the calculation<br>in fully connected layer and the shallow networks the BPCryptoNets achieve 95% accuracy and can make 4 predictions per hour on a single PC compared to the 99% accuracy and 51000 prediction per hour of Microsoft’s CryptoNets.</p><p>Unlike Microsoft’s application scene, I just assume that there are two parties in the BPCryptoNets prediction. The client encrypted the privacy data and send it to the prediction provider, referred to as the cloud. The cloud is able to compute the prediction over the encrypted data and send back the results that the client can decrypt and read.</p><p>The main ingredients of the BPCryptoNets are Back propagation Neural Networks and<br>homomorphic encryption. I make the assumption that the cloud already has the BPNeraulNet work model, it means that the networks was previously trained using a set of unencrypted data. However, training models on encrypted data which referred as privacy data-mining is still a big challenge. I implement a privacy preserving Linear Means Classification which can only apply simple data-mining several days ago. So it still has to train the networks on unencrypted data in order to get more precise parameters and iterations. In this work, I use the SEAL library<br>for homomorphic encryption which is a leveled homomorphic encryption scheme of Junfeng and Frederic Vercauteren.</p><h2 id="2-Neural-Networks"><a href="#2-Neural-Networks" class="headerlink" title="2. Neural Networks"></a>2. Neural Networks</h2><p>I use the shallow Back propagation Neural Networks which has three layers. The bottom-most layer is the input layer, each node of the input layer is fitted with proper weights for training. The second layer is a hidden layer which contains an activation function for the error propagation. And the activation function is the key point of a neural networks. The top-most layer are the output layer of the neural networks. In the last page there are graphical representation of the<br>neural networks.</p><p>In my setting, I don’t use the ordinary Sigmoid activation function due to its high degree that the homomorphic encryption can’t evaluate it. According to the Microsoft Research’s advice, I use the lowest-degree non-linear polynomial function, which is the square function: $sqr(z) = z^2$ . However, the change of the activation brings the change of the way that the error back propagation through the networks in the training period. In order to get proper weights for prediction, I must change the origin training algorithm, it’s a big challenge for me. And I solve it and get the correct approach in the end.</p><h3 id="2-1-Forward-Propagation-Stage"><a href="#2-1-Forward-Propagation-Stage" class="headerlink" title="2.1 Forward Propagation Stage"></a>2.1 Forward Propagation Stage</h3><p>Suppose that each input $x_k$ of the input layer has weight $w_{k,i}$, where $k\leq l$, l is the number of nodes in input layer $i\leq m$, m is the nmber of nodes in hidden layer. From the imput layer to the hidden layer there are two calculations:</p><ol><li>Weighted sum :$y’_i= \sum_k x_k \star w_k$.</li><li>Square: $y_i = (y’_i)^2$</li></ol><p>Thus the inputs of the hidden layer is $y_i$ .From the hidden layer to the output layer, assuming that the output layer has $n$ nodes each of weight $w_{i,j}$ , there are two calculations too:</p><p>…..</p><p>The origin pdf: <a href="https://github.com/llllddd/Nerual-Network" target="_blank" rel="noopener">https://github.com/llllddd/Nerual-Network</a></p>]]></content>
     
     <summary type="html">
     
       
       
-        
-
-	&lt;div class=&quot;row&quot;&gt;
-    &lt;embed src=&quot;3.pdf&quot; width=&quot;100%&quot; height=&quot;550&quot; type=&quot;application/pdf&quot;&gt;
-	&lt;/div&gt;
-
-
-
-
+        &lt;h2 id=&quot;1-Introduction&quot;&gt;&lt;a href=&quot;#1-Introduction&quot; class=&quot;headerlink&quot; title=&quot;1. Introduction&quot;&gt;&lt;/a&gt;1. Introduction&lt;/h2&gt;&lt;p&gt;Microsoft Research’s
       
     
     </summary>
@@ -235,23 +227,15 @@
     <link href="http://ldlovezyh.cn/2017/11/02/Linear/"/>
     <id>http://ldlovezyh.cn/2017/11/02/Linear/</id>
     <published>2017-11-01T16:00:00.000Z</published>
-    <updated>2019-03-06T14:34:02.301Z</updated>
+    <updated>2019-08-05T16:27:11.833Z</updated>
     
-    <content type="html"><![CDATA[<div class="row">    <embed src="2.pdf" width="100%" height="550" type="application/pdf"></div>]]></content>
+    <content type="html"><![CDATA[<p>I do an experiments follow the method of the thesis Machine Learning on Encrypted Data using the SEAL v2.2 library. This paper is published in 2012, and the SEAL is released in 2015 with the powerful computational capacity of SEAL the method mentioned in the paper can be implemented in a straightforward way.</p><p>The thesis introduce the binary perceptron which is an algorithm in machine learning and a basis of neural networks. In this paper the author consider the simple Linear Means and Fishers Linear Discriminant classifiers, both of which require only class-conditional statistics to be evaluated. Simply, the algorithm includes two stages:training stage and testing stage. In the training stage, there is an prediction function $f(x) = w^{\star}x+c^{\star}$ in which $w^{\star}$ is the weight vector and $c^{\star}$ is the bias. Our aim is to get the appropriate parameters through the sample data with training algorithm. This related to a lot of data processing. We need to calculate the statistical characteristics of the data, however for different attributes of the we will give specific weights $w$ of the attribute thus we can get a pair of parameters. However we will find some specific weights $w$ of the attribute thus we can get a pair of parameters. However we will find some data don’t fit in the function thus we will adjust the weights $w$ for example add the weights with $\eta$. Repeat the process, a pair of parameters will be appropriate for all the training data. We think such parameters can be used for prediction function. In the testing stage, input a sample of testing data $X$ to the function which we get in the tarinning stage, the score $f(x_0)$ reflects which class the data belong to.</p><p>Let $I_y = {i\in {1,\cdots ,m}| y_i = y}$ be the index set of training examples with label $y \in {+1,-1}$, I implement the simple Linear Means Classification on SEAL the training step are the follows:</p><ol><li>Calculate the sum of weights of different class:$S_y = \sum_{i\in{I_y}}x_i$.</li><li>Calculate the class-conditional mean vectors: $M_y = \frac{S_y}{\left| I_y \right|}$.</li><li>Obtain the weight vector: $W^{*} = M_{+1} - M_{-1}$.</li><li>Obtain the bias: $c^* = (M_{+1} - M_{-1})^{T}(M_{+1}+M_{-1})/2$.</li><li>Prediction function: $f^{\star}(X;W^{\star T}X - c^{\star})$.</li></ol><p>With the help of homomorphic encryption all these algorithms can be evaluated in encrypted<br>data, SEAL library supports all the operations in encryption scheme FV, the details of the FV scheme I don’t describe here, I read the documents of SEAL and it explains every details in FV scheme. The data I use for training is from Wisconsin Breast Cancer Data set. There are 30 attributes and I test 100 times and the result is well sound.</p><p>$$<br>\begin{array} {|l|l|l|l|}\hline features&amp;training&amp;test&amp;errors \\ \hline<br>9&amp; 20&amp; 100&amp; 5 \\ \hline<br>9&amp; 60&amp; 100&amp; 8 \\ \hline<br>30&amp;60&amp;100&amp;3 \\ \hline<br>\end{array}<br>$$</p>]]></content>
     
     <summary type="html">
     
       
       
-        
-
-	&lt;div class=&quot;row&quot;&gt;
-    &lt;embed src=&quot;2.pdf&quot; width=&quot;100%&quot; height=&quot;550&quot; type=&quot;application/pdf&quot;&gt;
-	&lt;/div&gt;
-
-
-
-
+        &lt;p&gt;I do an experiments follow the method of the thesis Machine Learning on Encrypted Data using the SEAL v2.2 library. This paper is publish
       
     
     </summary>
@@ -260,6 +244,31 @@
     
     
       <category term="密码学" scheme="http://ldlovezyh.cn/tags/%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
+    
+      <category term="同态加密" scheme="http://ldlovezyh.cn/tags/%E5%90%8C%E6%80%81%E5%8A%A0%E5%AF%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>An introduction to Cryptonets</title>
+    <link href="http://ldlovezyh.cn/2017/10/25/7.%20Introduction%20to%20CryptoNets/"/>
+    <id>http://ldlovezyh.cn/2017/10/25/7. Introduction to CryptoNets/</id>
+    <published>2017-10-24T16:00:00.000Z</published>
+    <updated>2019-08-05T15:53:35.876Z</updated>
+    
+    <content type="html"><![CDATA[<p>I read the thesis Applying Neural Networks to Encrypted Data with High Throughput and Accuracy by Microsoft research. In the paper, they associates the machine learning technique with the homomorphic encryption thus making it capable of applying the Neural network to the encrypted data to make encrypted predictions.</p><p>I think the main contribution of this thesis is that they use the proper homomorphic encryption scheme with appropriate optimizations to convert the Neural Networks to CryptoNets. Some ideas in the transform are worth using for reference. According to their method. It needs two main procedures to construct a Cryptonet.</p><h3 id="1-Creat-Neural-Networks-using-basic-operations"><a href="#1-Creat-Neural-Networks-using-basic-operations" class="headerlink" title="1.Creat Neural Networks using basic operations."></a>1.Creat Neural Networks using basic operations.</h3><p>We want cryptonets can be applied to encrypted data , that is to say the encrypted data support homomorphic calculation. So the main problem is to transform the functions in a Neural Networks to low-degree polynomials which can be evaluated on the ciphertexts by simply boolean circuits. However, a neural networks is of amazing complexity, it actually can break down intosmall parts of operations. Thus, we can evaluate simple operations on the encrypted data and finally accomplish the neyral networks prediction.</p><p>In this thesis, the nodes for prediction in the neural network contains five common functions except the nonlinear activation functions the data statistical function can be break down into basic addition and multiplication:</p><p>Statistical function:</p><p>$$<br>\begin{array} {|l|c|}\hline Weighted Sum&amp;+,\times \\ \hline<br>Max Pooling &amp; Sorting Circuit \\ \hline<br>Mean Pooling&amp;+ \times \\ \hline<br>\end{array}<br>$$</p><p>For max pooling it needs at least circuit depth 5 for sorting , thus it requires larger parameters. I calculate it in the GSW encryption scheme for security parameter $k=80$ and circuit depth $L=5$, the valid parameters of the encryption scheme is the following:</p><p>$$<br>\begin{array} {|l|c|}\hline q&amp;113603506650998636563 \\ \hline<br>n&amp; 100 \\ \hline<br>l&amp;67 \\ \hline<br>m&amp;6663 \\ \hline<br>l&amp;67 \\ \hline<br>\end{array}<br>$$</p><p>In the thesis, they consider an equivalent method due to the relation<br>$$(x_1,\cdots x_n) = lim_{d\rightarrow \infty }(\sum_ix_i^d)^{1/d}$$.<br>When $d=1$ it returns the scalar multiple of the mean pooling function. They use this scaled mean-pool fuction instead of the max-pool function thus the max pooling<br>function can be broke down into addition and multiplication too. Since homomorphic encryption scheme supports only additions and multiplications the main difficulties are the activiation functions: sigmoid and rectified linear. In the thesis , like max pool they also use the equivalent polynomial function. As sigmoid is the function: $sigm(z)=\frac{1}{1+exp(-z)}$ and it is equivalent to choose the lowest-degree non-linear polynomial function $sqr(z) = z^2$.</p><p>Both the equivalent function for maxpool and sigmoid are not precise, however it seems to be negligible in the neural networks. For more precise fitting, Taylor Series Expansion is a good choice. Such as:<br>$$e^x = 1+ x+ \frac{x^2}{2!} + \cdots + \frac{x^n}{n!}$$</p><p>$$ln(1+x) = x-\frac{x^2}{2!}+\frac{x^3}{3!} - \cdots $$</p><p>So we can get better fitting function for sigmoid.</p><h3 id="2-Choose-proper-Encryption-scheme"><a href="#2-Choose-proper-Encryption-scheme" class="headerlink" title="2.Choose proper Encryption scheme."></a>2.Choose proper Encryption scheme.</h3><p>In the thesis, they use YASHE for encrypting data. On the one hand, it is an Ring-LWE based encryption scheme thus some optimizations in the SEAL library are suitable for YASHE. Such as encoding strategy and SIMD. So the variants of GSW based on RLWE may more appropriate for CryptoNets. On the other hand, there are many template functions in SEAL library for the optimizations in the scheme which are common in RLWE based homomorphic encryption scheme. Includes: Encoding numbers by using Chinese Remainder theorem and parallel computation and so on. Now, i am reading the documentation of the SEAL library and learn how to use it.</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;I read the thesis Applying Neural Networks to Encrypted Data with High Throughput and Accuracy by Microsoft research. In the paper, they 
+      
+    
+    </summary>
+    
+      <category term="同态加密" scheme="http://ldlovezyh.cn/categories/%E5%90%8C%E6%80%81%E5%8A%A0%E5%AF%86/"/>
+    
     
       <category term="同态加密" scheme="http://ldlovezyh.cn/tags/%E5%90%8C%E6%80%81%E5%8A%A0%E5%AF%86/"/>
     

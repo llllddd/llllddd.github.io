@@ -132,15 +132,18 @@
 
 
 
+<meta name="description" content="I do an experiments follow the method of the thesis Machine Learning on Encrypted Data using the SEAL v2.2 library. This paper is published in 2012, and the SEAL is released in 2015 with the powerful">
 <meta name="keywords" content="密码学,同态加密">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Machine Learning on Encrypted Data using the SEAL v2.2 library">
 <meta property="og:url" content="http://ldlovezyh.cn/2017/11/02/Linear/index.html">
 <meta property="og:site_name" content="LoveLotus">
+<meta property="og:description" content="I do an experiments follow the method of the thesis Machine Learning on Encrypted Data using the SEAL v2.2 library. This paper is published in 2012, and the SEAL is released in 2015 with the powerful">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-06T14:34:02.301Z">
+<meta property="og:updated_time" content="2019-08-05T16:27:11.833Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Machine Learning on Encrypted Data using the SEAL v2.2 library">
+<meta name="twitter:description" content="I do an experiments follow the method of the thesis Machine Learning on Encrypted Data using the SEAL v2.2 library. This paper is published in 2012, and the SEAL is released in 2015 with the powerful">
 
 
 
@@ -413,14 +416,18 @@
       
 
       
-        
-
-	<div class="row">
-    <embed src="2.pdf" width="100%" height="550" type="application/pdf">
-	</div>
-
-
-
+        <p>I do an experiments follow the method of the thesis Machine Learning on Encrypted Data using the SEAL v2.2 library. This paper is published in 2012, and the SEAL is released in 2015 with the powerful computational capacity of SEAL the method mentioned in the paper can be implemented in a straightforward way.</p>
+<p>The thesis introduce the binary perceptron which is an algorithm in machine learning and a basis of neural networks. In this paper the author consider the simple Linear Means and Fishers Linear Discriminant classifiers, both of which require only class-conditional statistics to be evaluated. Simply, the algorithm includes two stages:training stage and testing stage. In the training stage, there is an prediction function $f(x) = w^{\star}x+c^{\star}$ in which $w^{\star}$ is the weight vector and $c^{\star}$ is the bias. Our aim is to get the appropriate parameters through the sample data with training algorithm. This related to a lot of data processing. We need to calculate the statistical characteristics of the data, however for different attributes of the we will give specific weights $w$ of the attribute thus we can get a pair of parameters. However we will find some specific weights $w$ of the attribute thus we can get a pair of parameters. However we will find some data don’t fit in the function thus we will adjust the weights $w$ for example add the weights with $\eta$. Repeat the process, a pair of parameters will be appropriate for all the training data. We think such parameters can be used for prediction function. In the testing stage, input a sample of testing data $X$ to the function which we get in the tarinning stage, the score $f(x_0)$ reflects which class the data belong to.</p>
+<p>Let $I_y = {i\in {1,\cdots ,m}| y_i = y}$ be the index set of training examples with label $y \in {+1,-1}$, I implement the simple Linear Means Classification on SEAL the training step are the follows:</p>
+<ol>
+<li>Calculate the sum of weights of different class:$S_y = \sum_{i\in{I_y}}x_i$.</li>
+<li>Calculate the class-conditional mean vectors: $M_y = \frac{S_y}{\left| I_y \right|}$.</li>
+<li>Obtain the weight vector: $W^{*} = M_{+1} - M_{-1}$.</li>
+<li>Obtain the bias: $c^* = (M_{+1} - M_{-1})^{T}(M_{+1}+M_{-1})/2$.</li>
+<li>Prediction function: $f^{\star}(X;W^{\star T}X - c^{\star})$.</li>
+</ol>
+<p>With the help of homomorphic encryption all these algorithms can be evaluated in encrypted<br>data, SEAL library supports all the operations in encryption scheme FV, the details of the FV scheme I don’t describe here, I read the documents of SEAL and it explains every details in FV scheme. The data I use for training is from Wisconsin Breast Cancer Data set. There are 30 attributes and I test 100 times and the result is well sound.</p>
+<p>$$<br>\begin{array} {|l|l|l|l|}\hline features&amp;training&amp;test&amp;errors \\ \hline<br>9&amp; 20&amp; 100&amp; 5 \\ \hline<br>9&amp; 60&amp; 100&amp; 8 \\ \hline<br>30&amp;60&amp;100&amp;3 \\ \hline<br>\end{array}<br>$$</p>
 
       
     </div>
@@ -457,8 +464,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/09/08/6.Data Retrieval/" rel="next" title="Ciphertexts retrieval and some possible optimizations">
-                <i class="fa fa-chevron-left"></i> Ciphertexts retrieval and some possible optimizations
+              <a href="/2017/10/25/7. Introduction to CryptoNets/" rel="next" title="An introduction to Cryptonets">
+                <i class="fa fa-chevron-left"></i> An introduction to Cryptonets
               </a>
             
           </div>
@@ -541,7 +548,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

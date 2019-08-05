@@ -132,15 +132,18 @@
 
 
 
+<meta name="description" content="1. IntroductionMicrosoft Research’s CryptoNets makes it possible to apply machine learning on encrypted data. And their Neural Networks is a type of convolution neural networks which is a deep network">
 <meta name="keywords" content="密码学,同态加密">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Homomorphic encryption on neural networks-BPCryptoNet">
 <meta property="og:url" content="http://ldlovezyh.cn/2017/11/20/BPCryptoNets/index.html">
 <meta property="og:site_name" content="LoveLotus">
+<meta property="og:description" content="1. IntroductionMicrosoft Research’s CryptoNets makes it possible to apply machine learning on encrypted data. And their Neural Networks is a type of convolution neural networks which is a deep network">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-06T14:32:45.071Z">
+<meta property="og:updated_time" content="2019-08-05T16:51:23.403Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Homomorphic encryption on neural networks-BPCryptoNet">
+<meta name="twitter:description" content="1. IntroductionMicrosoft Research’s CryptoNets makes it possible to apply machine learning on encrypted data. And their Neural Networks is a type of convolution neural networks which is a deep network">
 
 
 
@@ -413,14 +416,19 @@
       
 
       
-        
-
-	<div class="row">
-    <embed src="3.pdf" width="100%" height="550" type="application/pdf">
-	</div>
-
-
-
+        <h2 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1. Introduction"></a>1. Introduction</h2><p>Microsoft Research’s CryptoNets makes it possible to apply machine learning on encrypted data. And their Neural Networks is a type of convolution neural networks which is a deep networks. In this work, I present a light-weight BPCryptoNets which has only one hidden layer compared to the CryptoNets’ four hidden layers. The neural networks is actually a kind of back propagation neural networks which has only three layers in total. Due to the high overhead of the calculation<br>in fully connected layer and the shallow networks the BPCryptoNets achieve 95% accuracy and can make 4 predictions per hour on a single PC compared to the 99% accuracy and 51000 prediction per hour of Microsoft’s CryptoNets.</p>
+<p>Unlike Microsoft’s application scene, I just assume that there are two parties in the BPCryptoNets prediction. The client encrypted the privacy data and send it to the prediction provider, referred to as the cloud. The cloud is able to compute the prediction over the encrypted data and send back the results that the client can decrypt and read.</p>
+<p>The main ingredients of the BPCryptoNets are Back propagation Neural Networks and<br>homomorphic encryption. I make the assumption that the cloud already has the BPNeraulNet work model, it means that the networks was previously trained using a set of unencrypted data. However, training models on encrypted data which referred as privacy data-mining is still a big challenge. I implement a privacy preserving Linear Means Classification which can only apply simple data-mining several days ago. So it still has to train the networks on unencrypted data in order to get more precise parameters and iterations. In this work, I use the SEAL library<br>for homomorphic encryption which is a leveled homomorphic encryption scheme of Junfeng and Frederic Vercauteren.</p>
+<h2 id="2-Neural-Networks"><a href="#2-Neural-Networks" class="headerlink" title="2. Neural Networks"></a>2. Neural Networks</h2><p>I use the shallow Back propagation Neural Networks which has three layers. The bottom-most layer is the input layer, each node of the input layer is fitted with proper weights for training. The second layer is a hidden layer which contains an activation function for the error propagation. And the activation function is the key point of a neural networks. The top-most layer are the output layer of the neural networks. In the last page there are graphical representation of the<br>neural networks.</p>
+<p>In my setting, I don’t use the ordinary Sigmoid activation function due to its high degree that the homomorphic encryption can’t evaluate it. According to the Microsoft Research’s advice, I use the lowest-degree non-linear polynomial function, which is the square function: $sqr(z) = z^2$ . However, the change of the activation brings the change of the way that the error back propagation through the networks in the training period. In order to get proper weights for prediction, I must change the origin training algorithm, it’s a big challenge for me. And I solve it and get the correct approach in the end.</p>
+<h3 id="2-1-Forward-Propagation-Stage"><a href="#2-1-Forward-Propagation-Stage" class="headerlink" title="2.1 Forward Propagation Stage"></a>2.1 Forward Propagation Stage</h3><p>Suppose that each input $x_k$ of the input layer has weight $w_{k,i}$, where $k\leq l$, l is the number of nodes in input layer $i\leq m$, m is the nmber of nodes in hidden layer. From the imput layer to the hidden layer there are two calculations:</p>
+<ol>
+<li>Weighted sum :$y’_i= \sum_k x_k \star w_k$.</li>
+<li>Square: $y_i = (y’_i)^2$</li>
+</ol>
+<p>Thus the inputs of the hidden layer is $y_i$ .From the hidden layer to the output layer, assuming that the output layer has $n$ nodes each of weight $w_{i,j}$ , there are two calculations too:</p>
+<p>…..</p>
+<p>The origin pdf: <a href="https://github.com/llllddd/Nerual-Network" target="_blank" rel="noopener">https://github.com/llllddd/Nerual-Network</a></p>
 
       
     </div>
@@ -523,8 +531,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -541,7 +558,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -631,6 +648,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Introduction"><span class="nav-number">1.</span> <span class="nav-text">1. Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Neural-Networks"><span class="nav-number">2.</span> <span class="nav-text">2. Neural Networks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-Forward-Propagation-Stage"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 Forward Propagation Stage</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
