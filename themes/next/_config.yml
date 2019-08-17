@@ -84,13 +84,13 @@ index_with_subtitle: false
 # Value after `||` delimeter is the name of FontAwesome icon. If icon (with or without delimeter) is not specified, question icon will be loaded.
 menu:
   home: / || home
-  #categories: /categories
-  tags: /tags || tags
+  categories: /categories || tags
+  #tags: /tags || tags
   archives: /archives || archive
   about: /about || user
   # schedule: /schedule
-  #sitemap: /sitemap.xml
-  essay: /categories/专栏 || star
+  # sitemap: /sitemap.xml
+  # essay: /categories/专栏 
 
 # Enable/Disable menu icons.
 menu_icons:
@@ -149,7 +149,8 @@ social_icons:
 # Sidebar Avatar
 # in theme directory(source/images): /images/avatar.jpg
 # in site  directory(source/uploads): /uploads/avatar.jpg
-avatar: http://chuantu.biz/t6/341/1531317166x-1404795690.png
+avatar: /images/Avatar.jpg
+#avatar: https://wx2.sinaimg.cn/mw690/844f0132gy1fuqqkjjtr8j20g40g4tof.jpg
 
 
 
@@ -630,8 +631,8 @@ note:
   #  - modern    bs-callout new (v2-v3) alert style.
   #  - flat      flat callout style with background, like on Mozilla or StackOverflow.
   #  - disabled  disable all CSS styles import of note tag.
-  style: modern
-  icons: true
+  style: simple
+  icons: false
   border_radius: 3
   # Offset lighter of background in % for modern and flat styles (modern: -12 | 12; flat: -18 | 6).
   # Offset also applied to label tag variables. This option can work with disabled note tag.
